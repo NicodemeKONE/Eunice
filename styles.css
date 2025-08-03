@@ -9,7 +9,7 @@
     --primary-bg: #fafbfc;
     --secondary-bg: #f8f9fa;
     --surface: #ffffff;
-    --surface-elevated: rgba(151, 113, 113, 0.8);
+    --surface-elevated: rgba(255, 255, 255, 0.8);
     
     /* Couleurs neutres raffinées */
     --text-primary: #11113a;
@@ -1971,8 +1971,8 @@ body {
         --primary-bg: #1a1a1a;
         --secondary-bg: #2d2d2d;
         --surface: #1e1e1e;
-        --text-primary: #7070a1;
-        --text-secondary: #c2c2cb;
+        --text-primary: #191929;
+        --text-secondary: #a1a1a6;
         --text-tertiary: #8e8e93;
         --divider: rgba(255, 255, 255, 0.1);
     }
