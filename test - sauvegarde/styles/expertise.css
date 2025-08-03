@@ -1,0 +1,106 @@
+/* ===================================================
+   EXPERTISE.CSS - Section Expertise
+   =================================================== */
+
+/* ===== SECTION EXPERTISE ===== */
+.expertise {
+    background: var(--secondary-bg);
+    padding: var(--space-xl) 0;
+}
+
+/* ===== GRILLE EXPERTISE ===== */
+.expertise-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* ===== CARTES EXPERTISE ===== */
+.expertise-card {
+    background: var(--gradient-card);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    border: 1px solid var(--divider);
+    transition: var(--transition);
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.expertise-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.expertise-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== ICÔNE EXPERTISE ===== */
+.expertise-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    margin: 0 auto var(--space-lg);
+    transition: var(--transition-bounce);
+}
+
+.expertise-card:hover .expertise-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* ===== TITRE EXPERTISE ===== */
+.expertise-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+
+/* ===== COMPÉTENCES ===== */
+.expertise-skills {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.skill-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    text-align: left;
+    padding: var(--space-xs) 0;
+    transition: var(--transition-fast);
+}
+
+.skill-item:hover {
+    color: var(--text-primary);
+    transform: translateX(4px);
+}
+
+.skill-item i {
+    color: var(--accent-green);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    width: 16px;
+    text-align: center;
+}
+
+/* ===== RESPONSIVE EXPERTISE ===== */
+@media (min-width: 768px) {
+    /* Grille 3x2 sur desktop */
+    .expertise-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

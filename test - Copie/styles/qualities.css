@@ -1,0 +1,122 @@
+/* ===================================================
+   QUALITIES.CSS - Section Qualités Professionnelles
+   =================================================== */
+
+/* ===== SECTION QUALITÉS ===== */
+.qualities {
+    background: var(--surface);
+    padding: var(--space-2xl) 0;
+}
+
+/* ===== CONTENEUR QUALITÉS ===== */
+.qualities-container {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: var(--transition-slow);
+}
+
+.qualities-container.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== INTRODUCTION QUALITÉS ===== */
+.qualities-intro {
+    margin-bottom: var(--space-xl);
+}
+
+.qualities-intro h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+
+.qualities-intro p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+/* ===== LISTE QUALITÉS ===== */
+.qualities-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+}
+
+/* ===== ÉLÉMENTS QUALITÉ ===== */
+.quality-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    background: var(--gradient-card);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--divider);
+    transition: var(--transition);
+    text-align: left;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.quality-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.quality-item.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== ICÔNE QUALITÉ ===== */
+.quality-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    transition: var(--transition-bounce);
+}
+
+.quality-item:hover .quality-icon {
+    transform: scale(1.1);
+}
+
+/* ===== CONTENU QUALITÉ ===== */
+.quality-content h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+}
+
+.quality-content p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* ===== RESPONSIVE QUALITÉS ===== */
+@media (min-width: 600px) {
+    .qualities-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .qualities-list {
+        grid-template-columns: 1fr;
+    }
+}

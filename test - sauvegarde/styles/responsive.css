@@ -1,0 +1,394 @@
+/* ===================================================
+   RESPONSIVE.CSS - Styles responsifs
+   =================================================== */
+
+/* ===== BREAKPOINTS PERSONNALISÉS ===== */
+/* xs: 0-479px (très petits écrans) */
+/* sm: 480-767px (petits écrans) */
+/* md: 768-1023px (tablettes) */
+/* lg: 1024-1199px (petits desktops) */
+/* xl: 1200px+ (grands écrans) */
+
+/* ===== TRÈS PETITS ÉCRANS (0-479px) ===== */
+@media (max-width: 479px) {
+    /* Conteneur ultra-compact */
+    .container {
+        padding: 0 var(--space-md);
+    }
+    
+    /* Typographie mobile */
+    .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .hero-title {
+        font-size: 1.75rem;
+    }
+    
+    /* Navigation compacte */
+    .nav-container {
+        padding: var(--space-sm) var(--space-md);
+    }
+    
+    .nav-logo {
+        font-size: 1.1rem;
+    }
+    
+    /* Hero ultra-compact */
+    .hero {
+        padding: var(--space-lg) 0 var(--space-xl);
+    }
+    
+    .profile-card {
+        padding: var(--space-lg);
+        max-width: 300px;
+    }
+    
+    .profile-image img {
+        width: 100px;
+        height: 100px;
+    }
+    
+    /* Sections compactes */
+    .section {
+        padding: var(--space-lg) 0;
+    }
+    
+    .section-header {
+        margin-bottom: var(--space-lg);
+    }
+    
+    /* Boutons pleine largeur */
+    .btn {
+        max-width: none;
+        width: 100%;
+    }
+    
+    /* Cartes plus compactes */
+    .expertise-card,
+    .highlight-card,
+    .quality-item,
+    .contact-card,
+    .streamlit-form {
+        padding: var(--space-md);
+    }
+    
+    /* Timeline compact */
+    .journey-item {
+        padding-left: 60px;
+        margin-bottom: var(--space-xl);
+    }
+    
+    .timeline-track {
+        left: 20px;
+    }
+    
+    .journey-marker {
+        left: 6px;
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
+    }
+    
+    .journey-content {
+        padding: var(--space-md);
+    }
+    
+    /* Footer compact */
+    .footer {
+        padding: var(--space-xl) 0 var(--space-md);
+    }
+}
+
+/* ===== PETITS ÉCRANS (480-767px) ===== */
+@media (min-width: 480px) and (max-width: 767px) {
+    /* Améliorations pour petits écrans */
+    .hero-content {
+        gap: var(--space-xl);
+    }
+    
+    .profile-card {
+        max-width: 320px;
+    }
+    
+    .approach-item {
+        padding: var(--space-lg);
+    }
+    
+    /* Grille 2 colonnes pour certains éléments */
+    .qualities-list {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+    }
+}
+
+/* ===== TABLETTES (768-1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+    /* Optimisations tablettes */
+    .container {
+        padding: 0 var(--space-xl);
+    }
+    
+    /* Hero tablette */
+    .hero-content {
+        gap: var(--space-3xl);
+    }
+    
+    .profile-card {
+        max-width: 300px;
+    }
+    
+    /* Grilles optimisées */
+    .expertise-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-xl);
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .qualities-list {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-lg);
+    }
+    
+    /* Timeline tablette */
+    .journey-content {
+        padding: var(--space-lg);
+    }
+}
+
+/* ===== DESKTOP STANDARD (1024-1199px) ===== */
+@media (min-width: 1024px) and (max-width: 1199px) {
+    /* Espacements desktop */
+    .section {
+        padding: var(--space-3xl) 0;
+    }
+    
+    /* Hero desktop standard */
+    .hero {
+        min-height: 90vh;
+    }
+    
+    /* Grilles desktop */
+    .expertise-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-2xl);
+    }
+}
+
+/* ===== GRANDS ÉCRANS (1200px+) ===== */
+@media (min-width: 1200px) {
+    /* Espacements généreux */
+    .section {
+        padding: var(--space-4xl) 0;
+    }
+    
+    /* Conteneur plus large */
+    .container {
+        max-width: 1400px;
+        padding: 0 var(--space-2xl);
+    }
+    
+    /* Hero grand écran */
+    .hero {
+        min-height: 100vh;
+    }
+    
+    .hero-content {
+        gap: var(--space-4xl);
+    }
+    
+    /* Portfolio 3 colonnes */
+    .portfolio-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    /* About avec sticky optimisé */
+    .about-highlights {
+        top: 120px;
+    }
+}
+
+/* ===== ÉCRANS ULTRA-LARGES (1600px+) ===== */
+@media (min-width: 1600px) {
+    .container {
+        max-width: 1600px;
+    }
+    
+    .hero-content {
+        gap: var(--space-4xl);
+    }
+    
+    /* Typographie plus grande */
+    .hero-title {
+        font-size: 4rem;
+    }
+    
+    .section-title {
+        font-size: 3rem;
+    }
+}
+
+/* ===== ORIENTATION PAYSAGE MOBILE ===== */
+@media (max-width: 767px) and (orientation: landscape) {
+    /* Ajustements pour paysage mobile */
+    .hero {
+        min-height: 100vh;
+        padding: var(--space-md) 0;
+    }
+    
+    .hero-content {
+        flex-direction: row;
+        gap: var(--space-xl);
+        align-items: center;
+    }
+    
+    .profile-card {
+        order: 2;
+        max-width: 280px;
+    }
+    
+    .hero-text {
+        order: 1;
+        text-align: left;
+    }
+    
+    .section {
+        padding: var(--space-lg) 0;
+    }
+}
+
+/* ===== ÉCRANS HAUTE DENSITÉ ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Optimisations pour écrans Retina */
+    .profile-image img {
+        image-rendering: -webkit-optimize-contrast;
+    }
+    
+    .project-image img {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
+
+/* ===== PRÉFÉRENCES UTILISATEUR ===== */
+@media (prefers-color-scheme: dark) {
+    /* Variables pour mode sombre (optionnel) */
+    :root {
+        --primary-bg: #1a1a1a;
+        --secondary-bg: #2d2d2d;
+        --surface: #242424;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-tertiary: #808080;
+        --divider: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* ===== IMPRESSION ===== */
+@media print {
+    /* Masquer éléments non-imprimables */
+    .navbar,
+    .floating-shapes,
+    .hero-background,
+    .footer,
+    .contact,
+    .btn,
+    .social-links,
+    .portfolio-filters,
+    .streamlit-form {
+        display: none !important;
+    }
+    
+    /* Ajustements pour impression */
+    * {
+        background: white !important;
+        color: black !important;
+        box-shadow: none !important;
+    }
+    
+    .container {
+        max-width: none;
+        padding: 0;
+    }
+    
+    .section {
+        padding: 1rem 0;
+        page-break-inside: avoid;
+    }
+    
+    .hero {
+        min-height: auto;
+        padding: 1rem 0;
+    }
+    
+    .profile-image img {
+        max-width: 150px;
+    }
+    
+    /* Typographie impression */
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+}
+
+/* ===== NAVIGATION TACTILE ===== */
+@media (hover: none) and (pointer: coarse) {
+    /* Optimisations pour écrans tactiles */
+    .btn,
+    .nav-link,
+    .contact-method,
+    .expertise-card,
+    .portfolio-item {
+        min-height: 44px; /* Taille minimale tactile */
+    }
+    
+    /* Suppression des effets hover sur tactile */
+    .approach-item:hover,
+    .expertise-card:hover,
+    .portfolio-item:hover,
+    .journey-content:hover,
+    .highlight-card:hover {
+        transform: none;
+    }
+    
+    /* Boutons plus grands sur tactile */
+    .social-link {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .method-icon {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* ===== PERFORMANCES MOBILE ===== */
+@media (max-width: 767px) {
+    /* Optimisations performances mobile */
+    .floating-shapes {
+        display: none; /* Supprime les animations coûteuses */
+    }
+    
+    .backdrop-filter,
+    .navbar {
+        backdrop-filter: none; /* Simplifie les effets visuels */
+    }
+    
+    /* Simplification des gradients sur mobile */
+    .btn-primary,
+    .gradient-primary {
+        background: var(--accent-blue);
+    }
+}

@@ -1,0 +1,191 @@
+/* ===================================================
+   JOURNEY.CSS - Section Parcours Professionnel
+   =================================================== */
+
+/* ===== SECTION PARCOURS ===== */
+.journey {
+    background: var(--surface);
+}
+
+/* ===== CONTENEUR TIMELINE ===== */
+.journey-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.journey-timeline {
+    position: relative;
+    padding: var(--space-lg) 0;
+}
+
+/* ===== LIGNE TEMPORELLE ===== */
+.timeline-track {
+    position: absolute;
+    left: 30px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-sm);
+}
+
+/* ===== ÉLÉMENTS TIMELINE ===== */
+.journey-item {
+    position: relative;
+    margin-bottom: var(--space-3xl);
+    padding-left: 80px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: var(--transition-slow);
+}
+
+.journey-item.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== MARQUEURS TIMELINE ===== */
+.journey-marker {
+    position: absolute;
+    left: 16px;
+    top: 0;
+    width: 32px;
+    height: 32px;
+    background: var(--surface);
+    border: 3px solid var(--accent-blue);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-blue);
+    font-size: 0.875rem;
+    z-index: 2;
+    transition: var(--transition-bounce);
+}
+
+.journey-item:hover .journey-marker {
+    transform: scale(1.2);
+    box-shadow: var(--shadow-colored);
+}
+
+/* ===== TYPES DE MARQUEURS ===== */
+.journey-item.experience .journey-marker {
+    background: var(--accent-blue);
+    color: white;
+    border-color: var(--accent-blue);
+}
+
+.journey-item.education .journey-marker {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+    color: white;
+}
+
+.journey-item.volunteer .journey-marker {
+    background: var(--accent-green);
+    border-color: var(--accent-green);
+    color: white;
+}
+
+/* ===== CONTENU TIMELINE ===== */
+.journey-content {
+    background: var(--gradient-card);
+    padding: var(--space-xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--divider);
+    transition: var(--transition);
+    position: relative;
+}
+
+.journey-content::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 20px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 8px 8px 8px 0;
+    border-color: transparent white transparent transparent;
+}
+
+.journey-content:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* ===== EN-TÊTE TIMELINE ===== */
+.journey-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-lg);
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+}
+
+.journey-date {
+    background: var(--gradient-primary);
+    color: white;
+    padding: var(--space-sm) var(--space-lg);
+    border-radius: var(--radius-xl);
+    font-size: 0.875rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.journey-type {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ===== TITRES ET DESCRIPTIONS ===== */
+.journey-content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-xs);
+}
+
+.journey-content h4 {
+    font-size: 1.125rem;
+    color: var(--accent-blue);
+    font-weight: 500;
+    margin-bottom: var(--space-lg);
+}
+
+.journey-content p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-lg);
+    text-align: justify;
+    font-size: 0.95rem;
+}
+
+/* ===== BADGES TECHNOLOGIES ===== */
+.journey-technologies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+}
+
+.tech-badge {
+    background: var(--accent-blue-light);
+    color: var(--accent-blue);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid var(--accent-blue);
+    transition: var(--transition-fast);
+}
+
+.tech-badge:hover {
+    background: var(--accent-blue);
+    color: white;
+    transform: translateY(-1px);
+}

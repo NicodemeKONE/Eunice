@@ -1,0 +1,211 @@
+/* ===================================================
+   CONTACT.CSS - Section Contact
+   =================================================== */
+
+/* ===== SECTION CONTACT ===== */
+.contact {
+    background: var(--primary-bg);
+}
+
+/* ===== CONTENU CONTACT ===== */
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ===== CARTES CONTACT ===== */
+.contact-card,
+.streamlit-form {
+    background: var(--surface);
+    padding: var(--space-xl);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--divider);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: var(--transition-slow);
+}
+
+.contact-card.animate,
+.streamlit-form.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.contact-card h3,
+.streamlit-form h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+
+/* ===== MÉTHODES DE CONTACT ===== */
+.contact-methods {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.contact-method {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--secondary-bg);
+    border-radius: var(--radius-lg);
+    transition: var(--transition);
+}
+
+.contact-method:hover {
+    background: var(--accent-blue-light);
+    transform: translateX(4px);
+}
+
+/* ===== ICÔNES MÉTHODES ===== */
+.method-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    flex-shrink: 0;
+    transition: var(--transition-bounce);
+}
+
+.contact-method:hover .method-icon {
+    transform: scale(1.1);
+}
+
+/* ===== INFO MÉTHODES ===== */
+.method-info h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+}
+
+.method-info a,
+.method-info span {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: var(--transition-fast);
+}
+
+.method-info a:hover {
+    color: var(--accent-blue);
+}
+
+/* ===== FORMULAIRE STREAMLIT ===== */
+.streamlit-preview {
+    background: var(--gradient-primary);
+    color: white;
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    margin-bottom: var(--space-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.streamlit-preview::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+    pointer-events: none;
+}
+
+/* ===== ICÔNE STREAMLIT ===== */
+.streamlit-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-md);
+    opacity: 0.9;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.streamlit-preview h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+    position: relative;
+    z-index: 1;
+}
+
+.streamlit-preview p {
+    opacity: 0.9;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== BOUTON STREAMLIT ===== */
+.streamlit-btn {
+    background: var(--gradient-primary);
+    color: white;
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    width: 100%;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.streamlit-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.streamlit-btn:hover::before {
+    left: 100%;
+}
+
+.streamlit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-colored);
+}
+
+/* ===== NOTE FORMULAIRE ===== */
+.form-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+    color: var(--text-tertiary);
+    font-size: 0.8rem;
+}
+
+/* ===== RESPONSIVE CONTACT ===== */
+@media (min-width: 768px) {
+    /* Côte à côte sur desktop */
+    .contact-content {
+        grid-template-columns: 1fr 1fr;
+        gap: var(--space-2xl);
+    }
+}

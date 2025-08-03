@@ -1,0 +1,540 @@
+/* ===================================================
+   ABOUT.CSS - Section À propos (REFONTE COMPLÈTE MOBILE-FIRST)
+   =================================================== */
+
+/* ===== SECTION À PROPOS - MOBILE FIRST ===== */
+.about {
+    background: var(--surface);
+    /* Mobile : espacement minimal */
+    padding: var(--space-md) 0;
+}
+
+/* ===== CONTENU À PROPOS ===== */
+.about-content {
+    display: flex;
+    flex-direction: column;
+    /* Mobile : gap minimal */
+    gap: var(--space-sm);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.about-text {
+    order: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: var(--transition-slow);
+}
+
+.about-text.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.about-highlights {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    /* Mobile : gap très réduit */
+    gap: var(--space-xs);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: var(--transition-slow);
+    position: static;
+    /* Mobile : pas de marge bottom */
+    margin-bottom: 0;
+}
+
+.about-highlights.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== SECTIONS TEXTE - MOBILE OPTIMISÉ ===== */
+.about-intro,
+.about-philosophy,
+.about-approach {
+    /* Mobile : marge bottom drastiquement réduite */
+    margin-bottom: var(--space-sm);
+}
+
+/* Dernière section sans marge */
+.about-approach {
+    margin-bottom: 0;
+}
+
+.about-intro h3,
+.about-philosophy h3,
+.about-approach h3 {
+    /* Mobile : taille et espacement réduits */
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-sm);
+    position: relative;
+}
+
+.about-intro h3::after,
+.about-philosophy h3::after,
+.about-approach h3::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-xs);
+}
+
+.about-intro p,
+.about-philosophy p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.9rem;
+    text-align: left;
+    /* Mobile : marge bottom réduite */
+    margin-bottom: var(--space-xs);
+}
+
+.about-philosophy strong {
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+/* ===== CITATION - MOBILE OPTIMISÉE ===== */
+.about-quote {
+    /* Mobile : marges minimales */
+    margin: var(--space-xs) 0 var(--space-sm) 0;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: var(--transition-slow);
+}
+
+.about-quote.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.about-quote blockquote {
+    background: var(--gradient-primary);
+    color: white;
+    /* Mobile : padding réduit */
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+    box-shadow: var(--shadow-md);
+}
+
+.about-quote blockquote::before {
+    content: '"';
+    /* Mobile : taille réduite */
+    font-size: 2rem;
+    font-weight: 700;
+    position: absolute;
+    top: var(--space-xs);
+    left: var(--space-sm);
+    opacity: 0.3;
+    line-height: 1;
+}
+
+.about-quote blockquote p {
+    /* Mobile : taille et espacement réduits */
+    font-size: 0.85rem;
+    line-height: 1.5;
+    font-style: italic;
+    margin: 0 0 var(--space-sm) 0;
+    position: relative;
+    z-index: 1;
+}
+
+.about-quote cite {
+    font-size: 0.8rem;
+    font-weight: 500;
+    opacity: 0.9;
+    font-style: normal;
+}
+
+/* ===== LISTE D'APPROCHES - MOBILE OPTIMISÉE ===== */
+.approach-list {
+    display: flex;
+    flex-direction: column;
+    /* Mobile : gap minimal */
+    gap: var(--space-xs);
+    /* Mobile : marge top réduite */
+    margin-top: var(--space-sm);
+    /* Mobile : pas de marge bottom */
+    margin-bottom: 0;
+}
+
+.approach-item {
+    display: flex;
+    /* Mobile : centré verticalement */
+    align-items: center;
+    gap: var(--space-sm);
+    /* Mobile : padding réduit */
+    padding: var(--space-sm);
+    background: var(--gradient-card);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--divider);
+    transition: var(--transition);
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.approach-item:hover {
+    transform: translateY(-2px) translateX(0);
+    box-shadow: var(--shadow-sm);
+}
+
+.approach-item.animate {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.approach-icon {
+    /* Mobile : taille réduite */
+    width: 36px;
+    height: 36px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    transition: var(--transition-bounce);
+}
+
+.approach-item:hover .approach-icon {
+    transform: scale(1.05);
+}
+
+.approach-text h4 {
+    /* Mobile : taille réduite */
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+}
+
+.approach-text p {
+    color: var(--text-secondary);
+    line-height: 1.4;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+/* ===== CARTES HIGHLIGHT - MOBILE OPTIMISÉES ===== */
+.highlight-card {
+    background: var(--gradient-card);
+    /* Mobile : padding minimal */
+    padding: var(--space-sm);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--divider);
+    text-align: center;
+    transition: var(--transition);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.highlight-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.highlight-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.highlight-icon {
+    /* Mobile : taille réduite */
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1rem;
+    margin: 0 auto var(--space-xs);
+    transition: var(--transition-bounce);
+}
+
+.highlight-card:hover .highlight-icon {
+    transform: scale(1.05);
+}
+
+.highlight-card h4 {
+    /* Mobile : taille réduite */
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+}
+
+.highlight-card p {
+    color: var(--text-secondary);
+    line-height: 1.4;
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+/* ===== RESPONSIVE PROGRESSIF ===== */
+
+/* Petits écrans : 480px+ */
+@media (min-width: 480px) {
+    .about {
+        padding: var(--space-lg) 0;
+    }
+    
+    .about-content {
+        gap: var(--space-md);
+    }
+    
+    .about-highlights {
+        gap: var(--space-sm);
+    }
+    
+    .about-quote blockquote {
+        padding: var(--space-lg);
+        border-radius: var(--radius-xl);
+    }
+    
+    .approach-item {
+        padding: var(--space-md);
+    }
+    
+    .highlight-card {
+        padding: var(--space-md);
+    }
+}
+
+/* Tablettes : 600px+ */
+@media (min-width: 600px) {
+    .about-intro,
+    .about-philosophy,
+    .about-approach {
+        margin-bottom: var(--space-md);
+    }
+    
+    .about-intro h3,
+    .about-philosophy h3,
+    .about-approach h3 {
+        font-size: 1.4rem;
+        margin-bottom: var(--space-md);
+    }
+    
+    .approach-item {
+        gap: var(--space-md);
+        padding: var(--space-lg);
+    }
+    
+    .approach-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.1rem;
+    }
+    
+    .highlight-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.3rem;
+    }
+    
+    .highlight-card {
+        padding: var(--space-lg);
+    }
+    
+    .about-quote blockquote {
+        padding: var(--space-xl);
+    }
+    
+    .about-quote blockquote::before {
+        font-size: 3rem;
+    }
+    
+    .about-quote blockquote p {
+        font-size: 1rem;
+    }
+    
+    .approach-list {
+        gap: var(--space-sm);
+    }
+}
+
+/* Desktop : 768px+ */
+@media (min-width: 768px) {
+    .about {
+        padding: var(--space-xl) 0;
+    }
+    
+    /* Organisation desktop en grille */
+    .about-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: var(--space-3xl);
+        align-items: start;
+    }
+
+    .about-text {
+        order: 1;
+    }
+
+    .about-highlights {
+        order: 2;
+        position: sticky;
+        top: 100px;
+        gap: var(--space-md);
+    }
+    
+    /* Retour aux espacements desktop */
+    .about-intro,
+    .about-philosophy,
+    .about-approach {
+        margin-bottom: var(--space-lg);
+    }
+    
+    .about-approach {
+        margin-bottom: var(--space-lg); /* Retour marge normale */
+    }
+    
+    .about-intro h3,
+    .about-philosophy h3,
+    .about-approach h3 {
+        font-size: 1.5rem;
+        margin-bottom: var(--space-lg);
+    }
+    
+    .about-intro h3::after,
+    .about-philosophy h3::after,
+    .about-approach h3::after {
+        width: 50px;
+        height: 3px;
+        bottom: -8px;
+    }
+    
+    .about-intro p,
+    .about-philosophy p {
+        font-size: 1rem;
+        line-height: 1.7;
+        text-align: justify;
+    }
+    
+    .about-quote {
+        margin: var(--space-md) 0 var(--space-xl) 0;
+    }
+    
+    .about-quote blockquote {
+        padding: var(--space-2xl);
+        max-width: 700px;
+    }
+    
+    .about-quote blockquote::before {
+        font-size: 4rem;
+        left: var(--space-lg);
+    }
+    
+    .about-quote blockquote p {
+        font-size: 1.125rem;
+        line-height: 1.6;
+    }
+    
+    .approach-list {
+        margin-top: var(--space-lg);
+        gap: var(--space-md);
+    }
+    
+    .approach-item {
+        align-items: flex-start;
+        gap: var(--space-md);
+        padding: var(--space-lg);
+        border-radius: var(--radius-xl);
+    }
+    
+    .approach-item:hover {
+        transform: translateY(-4px) translateX(0);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .approach-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: var(--radius-lg);
+        font-size: 1.1rem;
+    }
+    
+    .approach-item:hover .approach-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+    
+    .approach-text h4 {
+        font-size: 1rem;
+        margin-bottom: var(--space-sm);
+    }
+    
+    .approach-text p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+    
+    .highlight-card {
+        padding: var(--space-xl);
+        border-radius: var(--radius-xl);
+    }
+    
+    .highlight-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .highlight-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: var(--radius-lg);
+        font-size: 1.3rem;
+        margin-bottom: var(--space-md);
+    }
+    
+    .highlight-card:hover .highlight-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+    
+    .highlight-card h4 {
+        font-size: 1.1rem;
+        margin-bottom: var(--space-sm);
+    }
+    
+    .highlight-card p {
+        font-size: 0.9rem;
+        line-height: 1.6;
+    }
+}
+
+/* Grands écrans : 1024px+ */
+@media (min-width: 1024px) {
+    .about {
+        padding: var(--space-2xl) 0;
+    }
+    
+    .about-content {
+        gap: var(--space-4xl);
+    }
+}
+
+
+/* SOLUTION MOBILE SANS ANIMATIONS */
+/* @media (max-width: 767px) {
+    .about-highlights,
+    .approach-item,
+    .highlight-card {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+} */

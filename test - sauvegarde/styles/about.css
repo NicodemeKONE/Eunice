@@ -1,0 +1,348 @@
+/* ===================================================
+   ABOUT.CSS - Section À propos
+   =================================================== */
+
+/* ===== SECTION À PROPOS ===== */
+.about {
+    background: var(--surface);
+    padding: var(--space-xl) 0;
+}
+
+/* ===== CONTENU À PROPOS ===== */
+.about-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.about-text {
+    order: 1;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: var(--transition-slow);
+}
+
+.about-text.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.about-highlights {
+    order: 2;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: var(--transition-slow);
+    position: static;
+}
+
+.about-highlights.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== SECTIONS TEXTE ===== */
+.about-intro,
+.about-philosophy,
+.about-approach {
+    margin-bottom: var(--space-xl);
+}
+
+.about-intro h3,
+.about-philosophy h3,
+.about-approach h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-lg);
+    position: relative;
+}
+
+.about-intro h3::after,
+.about-philosophy h3::after,
+.about-approach h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-xs);
+}
+
+.about-intro p,
+.about-philosophy p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    font-size: 1rem;
+    text-align: justify;
+}
+
+.about-philosophy strong {
+    color: var(--accent-blue);
+    font-weight: 600;
+}
+
+/* ===== CITATION ===== */
+.about-quote {
+    margin: var(--space-md) 0 var(--space-xl) 0;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: var(--transition-slow);
+}
+
+.about-quote.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.about-quote blockquote {
+    background: var(--gradient-primary);
+    color: white;
+    padding: var(--space-xl);
+    border-radius: var(--radius-2xl);
+    position: relative;
+    max-width: 700px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-lg);
+}
+
+.about-quote blockquote::before {
+    content: '"';
+    font-size: 3rem;
+    font-weight: 700;
+    position: absolute;
+    top: var(--space-sm);
+    left: var(--space-lg);
+    opacity: 0.3;
+    line-height: 1;
+}
+
+.about-quote blockquote p {
+    font-size: 1rem;
+    line-height: 1.6;
+    font-style: italic;
+    margin: 0 0 var(--space-lg) 0;
+    position: relative;
+    z-index: 1;
+}
+
+.about-quote cite {
+    font-size: 0.9rem;
+    font-weight: 500;
+    opacity: 0.9;
+    font-style: normal;
+}
+
+/* ===== LISTE D'APPROCHES ===== */
+.approach-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+}
+
+.approach-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-lg);
+    background: var(--gradient-card);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--divider);
+    transition: var(--transition);
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.approach-item:hover {
+    transform: translateY(-4px) translateX(0);
+    box-shadow: var(--shadow-lg);
+}
+
+.approach-item.animate {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.approach-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+    transition: var(--transition-bounce);
+}
+
+.approach-item:hover .approach-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.approach-text h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+}
+
+.approach-text p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+/* ===== CARTES HIGHLIGHT ===== */
+.highlight-card {
+    background: var(--gradient-card);
+    padding: var(--space-lg);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--divider);
+    text-align: center;
+    transition: var(--transition);
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.highlight-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+}
+
+.highlight-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.highlight-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--gradient-primary);
+    border-radius: var(--radius-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.3rem;
+    margin: 0 auto var(--space-md);
+    transition: var(--transition-bounce);
+}
+
+.highlight-card:hover .highlight-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.highlight-card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+}
+
+.highlight-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.9rem;
+}
+
+/* ===== RESPONSIVE À PROPOS ===== */
+@media (max-width: 480px) {
+    .approach-item {
+        flex-direction: column;
+        text-align: center;
+        gap: var(--space-md);
+    }
+
+    .approach-icon {
+        align-self: center;
+        width: 48px;
+        height: 48px;
+        font-size: 1.1rem;
+    }
+    
+    .highlight-card {
+        padding: var(--space-lg);
+    }
+    
+    .highlight-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.3rem;
+    }
+    
+    .about-quote blockquote {
+        padding: var(--space-lg);
+    }
+    
+    .about-quote blockquote::before {
+        font-size: 3rem;
+    }
+    
+    .about-quote blockquote p {
+        font-size: 1rem;
+    }
+}
+
+@media (min-width: 600px) {
+    .approach-item {
+        gap: var(--space-lg);
+    }
+    
+    .approach-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.25rem;
+    }
+    
+    .highlight-icon {
+        width: 64px;
+        height: 64px;
+        font-size: 1.5rem;
+    }
+    
+    .highlight-card {
+        padding: var(--space-xl);
+    }
+    
+    .about-quote blockquote {
+        padding: var(--space-2xl);
+    }
+    
+    .about-quote blockquote::before {
+        font-size: 4rem;
+    }
+    
+    .about-quote blockquote p {
+        font-size: 1.125rem;
+    }
+}
+
+@media (min-width: 768px) {
+    /* Organisation desktop */
+    .about-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: var(--space-4xl);
+        align-items: start;
+    }
+
+    .about-text {
+        order: 1;
+    }
+
+    .about-highlights {
+        order: 2;
+        position: sticky;
+        top: 100px;
+    }
+}

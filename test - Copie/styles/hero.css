@@ -1,0 +1,285 @@
+/* ===================================================
+   HERO.CSS - Section Hero
+   =================================================== */
+
+/* ===== SECTION HERO MOBILE FIRST ===== */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: var(--space-xl) 0 var(--space-2xl);
+    background: var(--gradient-hero);
+    position: relative;
+    overflow: hidden;
+}
+
+/* ===== ARRIÈRE-PLAN ANIMÉ ===== */
+.hero-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+}
+
+.floating-shapes {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.shape {
+    position: absolute;
+    border-radius: var(--radius-full);
+    background: rgba(0, 122, 255, 0.06);
+    animation: float 8s ease-in-out infinite;
+}
+
+.shape-1 {
+    width: 80px;
+    height: 80px;
+    top: 20%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.shape-2 {
+    width: 120px;
+    height: 120px;
+    top: 60%;
+    right: 15%;
+    animation-delay: 2s;
+}
+
+.shape-3 {
+    width: 60px;
+    height: 60px;
+    top: 80%;
+    left: 20%;
+    animation-delay: 4s;
+}
+
+.shape-4 {
+    width: 100px;
+    height: 100px;
+    top: 10%;
+    right: 30%;
+    animation-delay: 1s;
+}
+
+/* ===== CONTENU HERO ===== */
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2xl);
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* ===== CARTE PROFIL ===== */
+.profile-card {
+    background: var(--gradient-card);
+    backdrop-filter: blur(20px);
+    border-radius: var(--radius-2xl);
+    padding: var(--space-xl);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: var(--shadow-lg);
+    order: 1;
+    width: 100%;
+    max-width: 350px;
+    transition: var(--transition);
+}
+
+.profile-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+/* ===== IMAGE PROFIL ===== */
+.profile-image {
+    position: relative;
+    margin-bottom: var(--space-lg);
+    display: inline-block;
+}
+
+.profile-image img {
+    width: 140px;
+    height: 140px;
+    border-radius: var(--radius-full);
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+.profile-ring {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border: 2px solid var(--accent-blue);
+    border-radius: var(--radius-full);
+    opacity: 0.6;
+    animation: rotate 10s linear infinite;
+}
+
+/* ===== INFO PROFIL ===== */
+.profile-info h3 {
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    margin-bottom: var(--space-sm);
+    font-weight: 600;
+}
+
+.profile-info p {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+}
+
+/* ===== LIENS SOCIAUX ===== */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--accent-blue);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: var(--transition-bounce);
+    backdrop-filter: blur(10px);
+}
+
+.social-link:hover {
+    background: var(--accent-blue);
+    color: white;
+    transform: translateY(-2px) scale(1.1);
+}
+
+/* ===== TEXTE HÉRO ===== */
+.hero-text {
+    order: 2;
+    max-width: 600px;
+}
+
+.hero-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.title-line {
+    color: var(--text-primary);
+}
+
+.title-highlight {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+    font-weight: 500;
+}
+
+.hero-description {
+    color: var(--text-tertiary);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin-bottom: var(--space-xl);
+}
+
+/* ===== CALL TO ACTION ===== */
+.hero-cta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: center;
+}
+
+/* ===== RESPONSIVE HERO ===== */
+@media (max-width: 767px) {
+    /* Mobile optimisé */
+    .profile-image img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .profile-ring {
+        top: -6px;
+        left: -6px;
+        right: -6px;
+        bottom: -6px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Très petits écrans */
+    .profile-card {
+        padding: var(--space-lg);
+    }
+
+    .hero-title {
+        font-size: 2rem;
+    }
+}
+
+@media (min-width: 768px) {
+    /* Desktop : côte à côte */
+    .hero-content {
+        flex-direction: row;
+        text-align: left;
+        align-items: center;
+    }
+
+    .profile-card {
+        order: 2;
+        flex-shrink: 0;
+    }
+
+    .hero-text {
+        order: 1;
+        text-align: left;
+    }
+
+    .hero-cta {
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    .btn {
+        width: auto;
+    }
+}
+
+@media (min-width: 1024px) {
+    /* Hero plus imposant sur desktop */
+    .hero {
+        min-height: 100vh;
+    }
+}

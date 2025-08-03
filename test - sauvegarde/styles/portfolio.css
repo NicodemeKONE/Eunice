@@ -1,0 +1,201 @@
+/* ===================================================
+   PORTFOLIO.CSS - Section Portfolio
+   =================================================== */
+
+/* ===== SECTION PORTFOLIO ===== */
+.portfolio {
+    background: var(--secondary-bg);
+}
+
+/* ===== FILTRES PORTFOLIO ===== */
+.portfolio-filters {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-3xl);
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: var(--space-sm) var(--space-lg);
+    border: 2px solid var(--divider);
+    background: var(--surface);
+    color: var(--text-secondary);
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: transparent;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+/* ===== GRILLE PORTFOLIO ===== */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+}
+
+/* ===== ÉLÉMENTS PORTFOLIO ===== */
+.portfolio-item {
+    background: var(--surface);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    opacity: 0;
+    transform: translateY(30px);
+    border: 1px solid var(--divider);
+}
+
+.portfolio-item:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.portfolio-item.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== IMAGE PROJET ===== */
+.project-image {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition-slow);
+}
+
+/* ===== OVERLAY PROJET ===== */
+.project-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: var(--transition);
+    backdrop-filter: blur(2px);
+}
+
+.portfolio-item:hover .project-overlay {
+    opacity: 0.95;
+}
+
+.portfolio-item:hover .project-image img {
+    transform: scale(1.1);
+}
+
+/* ===== INFO PROJET OVERLAY ===== */
+.project-info {
+    text-align: center;
+    color: white;
+    padding: var(--space-lg);
+}
+
+.project-info h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-sm);
+    color: white;
+    font-weight: 600;
+}
+
+.project-info p {
+    margin-bottom: var(--space-lg);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1rem;
+}
+
+/* ===== LIENS PROJET ===== */
+.project-links {
+    display: flex;
+    gap: var(--space-sm);
+    justify-content: center;
+}
+
+.project-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: var(--transition-bounce);
+    backdrop-filter: blur(10px);
+}
+
+.project-link:hover {
+    background: white;
+    color: var(--accent-blue);
+    transform: scale(1.1) translateY(-2px);
+}
+
+/* ===== CONTENU PROJET ===== */
+.project-content {
+    padding: var(--space-xl);
+}
+
+/* ===== TAGS PROJET ===== */
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    margin-bottom: var(--space-md);
+}
+
+.tag {
+    background: var(--accent-blue-light);
+    color: var(--accent-blue);
+    padding: var(--space-xs) var(--space-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: var(--transition-fast);
+}
+
+.tag:hover {
+    background: var(--accent-blue);
+    color: white;
+}
+
+/* ===== TITRE ET DESCRIPTION PROJET ===== */
+.project-content h3 {
+    font-size: 1.25rem;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.project-content p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* ===== RESPONSIVE PORTFOLIO ===== */
+@media (min-width: 600px) {
+    .portfolio-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+}

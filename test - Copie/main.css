@@ -1,0 +1,24 @@
+/* ===================================================
+   PORTFOLIO LAMAH MAA EUNICE - FICHIER PRINCIPAL CSS
+   =================================================== */
+
+/* Import des polices */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Import des styles de base */
+@import url('./styles/base.css');
+
+/* Import des composants */
+@import url('./styles/navigation.css');
+@import url('./styles/hero.css');
+@import url('./styles/about.css');
+@import url('./styles/expertise.css');
+@import url('./styles/portfolio.css');
+@import url('./styles/journey.css');
+@import url('./styles/qualities.css');
+@import url('./styles/contact.css');
+@import url('./styles/footer.css');
+
+/* Import des utilitaires */
+@import url('./styles/animations.css');
+@import url('./styles/responsive.css');

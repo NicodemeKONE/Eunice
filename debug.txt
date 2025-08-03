@@ -1,0 +1,101 @@
+PROMPT POUR DIAGNOSTIC ET RÉSOLUTION D'ESPACEMENT MOBILE
+
+===== CONTEXTE TECHNIQUE =====
+
+Je développe un portfolio en HTML/CSS/JS avec architecture mobile-first. J'ai un problème d'espacement visuel excessif entre deux sections spécifiquement sur petits écrans mobile (≤ 400px).
+
+===== PROBLÈME PRÉCIS =====
+
+SYMPTÔME : Espacement visuel important entre les sections "À propos" (.about) et "Expertise" (.expertise) sur mobile uniquement
+IMPACT : Création d'un "trou" blanc qui casse l'harmonie visuelle
+CONTEXTE : Le problème n'apparaît que sur mobile, le desktop fonctionne parfaitement
+
+===== DIAGNOSTIC DÉJÀ EFFECTUÉ =====
+
+J'ai utilisé des outils JavaScript de debug qui ont révélé :
+
+1. GAP ENTRE SECTIONS : 0px (les sections se touchent parfaitement)
+2. PROBLÈME RÉEL : Accumulation d'espacements INTERNES dans la section .about
+3. ÉLÉMENTS PROBLÉMATIQUES identifiés :
+   - .about-approach : Height 984px (énorme)
+   - .approach-list : Height 613px  
+   - Chaque .approach-item : margin-bottom qui s'accumulent
+   - Chaque .highlight-card : margin-bottom qui s'accumulent
+   - .about-quote : spacing excessif
+
+4. TEST DE VALIDATION RÉUSSI :
+   ```javascript
+   // Ce code a RÉSOLU temporairement le problème
+   document.querySelectorAll('.about *').forEach(el => {
+       el.style.marginBottom = '0px';
+       el.style.paddingBottom = '0px';
+   });
+   // Résultat : gap réduit à 0px
+   ```
+
+===== ARCHITECTURE ACTUELLE =====
+
+CSS : Mobile-first avec variables CSS (--space-xs à --space-4xl)
+JS : Contient une fonction fixMobileSpacing() qui applique des styles inline
+STRUCTURE HTML : 
+```html
+<section class="about">
+  <div class="about-content">
+    <div class="about-text">
+      <div class="about-intro">...</div>
+      <div class="about-philosophy">...</div>
+      <div class="about-approach">
+        <div class="approach-list">
+          <div class="approach-item">...</div> <!-- x3 -->
+        </div>
+      </div>
+    </div>
+    <div class="about-highlights">
+      <div class="highlight-card">...</div> <!-- x3 -->
+    </div>
+  </div>
+</section>
+<section class="expertise">...</section>
+```
+
+===== CE QUI A ÉTÉ TESTÉ =====
+
+✅ Diagnostic gap entre sections : 0px (pas le problème)
+✅ Suppression margins/paddings : RÉSOUT le problème
+✅ Analyse éléments internes : accumulation d'espacements identifiée
+❓ Impact du JavaScript fixMobileSpacing() : à confirmer
+❓ Variables CSS responsives : à optimiser
+
+===== CONTRAINTES =====
+
+- Conserver l'architecture mobile-first
+- Garder le design harmonieux sur desktop
+- Éviter les solutions "!important" en cascade
+- Préférer une solution CSS propre vs corrections JavaScript
+- Maintenir la lisibilité et maintenabilité du code
+
+===== DEMANDE PRÉCISE =====
+
+J'ai besoin que tu m'aides à :
+
+1. IDENTIFIER définitivement la source exacte du problème (CSS vs JS)
+2. PROPOSER une solution technique propre et durable  
+3. FOURNIR le code corrigé (CSS et/ou JS selon le diagnostic)
+4. EXPLIQUER pourquoi cette solution résout le problème sans en créer d'autres
+
+===== INFORMATIONS COMPLÉMENTAIRES =====
+
+- Variables CSS actuelles : --space-sm (8px), --space-md (16px), --space-lg (24px), --space-xl (32px), --space-2xl (48px)
+- Breakpoint mobile : @media (max-width: 767px)
+- Le JavaScript contient : fixMobileSpacing(), handleResize(), événements scroll/resize
+- Le problème apparaît uniquement sur la transition about → expertise
+
+===== RÉSULTAT ATTENDU =====
+
+Une solution technique complète avec :
+- Diagnostic précis de la cause racine
+- Code CSS/JS corrigé
+- Explication du "pourquoi" ça fonctionne
+- Instructions de test pour valider la correction
+
+Peux-tu m'aider à résoudre ce problème d'espacement mobile de manière définitive et propre ?

@@ -1,0 +1,282 @@
+/* ===================================================
+   BASE.CSS - Variables et styles de base
+   =================================================== */
+
+/* ===== VARIABLES CSS OPTIMISÉES ===== */
+:root {
+    /* Couleurs Apple-inspired - Palette sophistiquée */
+    --primary-bg: #fafbfc;
+    --secondary-bg: #f8f9fa;
+    --surface: #ffffff;
+    --surface-elevated: rgba(255, 255, 255, 0.8);
+    
+    /* Couleurs neutres raffinées */
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-tertiary: #86868b;
+    --divider: rgba(0, 0, 0, 0.05);
+    
+    /* Couleurs d'accent subtiles */
+    --accent-blue: #007aff;
+    --accent-blue-light: rgba(0, 122, 255, 0.1);
+    --accent-purple: #5856d6;
+    --accent-teal: #00b4d8;
+    --accent-green: #30d158;
+    --accent-orange: #ff9500;
+    
+    /* Gradients Apple-style */
+    --gradient-primary: linear-gradient(135deg, #007aff 0%, #5856d6 100%);
+    --gradient-surface: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 100%);
+    --gradient-hero: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.9) 0%, rgba(248,249,250,0.9) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 100%);
+    
+    /* Ombres subtiles avec profondeur */
+    --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-xl: 0 16px 40px rgba(0, 0, 0, 0.16);
+    --shadow-colored: 0 8px 32px rgba(0, 122, 255, 0.2);
+    
+    /* Typographie */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    
+    /* Espacements optimisés avec échelle harmonique */
+    --space-xs: 0.25rem;    /* 4px */
+    --space-sm: 0.5rem;     /* 8px */
+    --space-md: 1rem;       /* 16px */
+    --space-lg: 1.5rem;     /* 24px */
+    --space-xl: 2rem;       /* 32px */
+    --space-2xl: 3rem;      /* 48px */
+    --space-3xl: 4rem;      /* 64px */
+    --space-4xl: 6rem;      /* 96px */
+    
+    /* Bordures avec échelle cohérente */
+    --radius-xs: 0.25rem;
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-xl: 1.25rem;
+    --radius-2xl: 1.5rem;
+    --radius-full: 50%;
+    
+    /* Transitions fluides et naturelles */
+    --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-fast: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-slow: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* ===== RESET ET BASE ===== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    color: var(--text-primary);
+    background: var(--primary-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+/* ===== CONTENEUR PRINCIPAL ===== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+
+/* ===== SECTIONS COMMUNES ===== */
+.section {
+    padding: var(--space-xl) 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+}
+
+.section-tag {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-lg);
+    background: var(--accent-blue-light);
+    color: var(--accent-blue);
+    border-radius: var(--radius-xl);
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: var(--space-md);
+    letter-spacing: 0.5px;
+}
+
+.section-title {
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: var(--space-md);
+    color: var(--text-primary);
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* ===== BOUTONS MODERNES ===== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-xl);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    max-width: 280px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-colored);
+}
+
+.btn-secondary {
+    background: var(--surface);
+    color: var(--accent-blue);
+    border: 1px solid var(--divider);
+    box-shadow: var(--shadow-xs);
+}
+
+.btn-secondary:hover {
+    background: var(--accent-blue-light);
+    transform: translateY(-1px);
+    border-color: var(--accent-blue);
+}
+
+/* ===== CLASSES UTILITAIRES ===== */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+/* ===== AMÉLIORATION DES PERFORMANCES ===== */
+.navbar,
+.hero-background,
+.profile-ring,
+.floating-shapes {
+    will-change: transform;
+}
+
+.expertise-card,
+.portfolio-item,
+.journey-item,
+.quality-item,
+.contact-method,
+.social-link,
+.approach-item,
+.highlight-card {
+    will-change: transform;
+}
+
+/* ===== ACCESSIBILITÉ ===== */
+.btn:focus,
+.nav-link:focus,
+.social-link:focus {
+    outline: 2px solid var(--accent-blue);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+}
+
+/* ===== RÉDUCTION DES ANIMATIONS POUR ACCESSIBILITÉ ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .floating-shapes,
+    .profile-ring {
+        animation: none;
+    }
+}
+
+/* ===== STYLES POUR L'IMPRESSION ===== */
+@media print {
+    .hero {
+        background: none;
+        color: black;
+        min-height: auto;
+        padding: var(--space-lg) 0;
+    }
+    
+    .section {
+        page-break-inside: avoid;
+        padding: var(--space-md) 0;
+    }
+    
+    .btn {
+        border: 1px solid black;
+        color: black;
+        background: white;
+    }
+}
