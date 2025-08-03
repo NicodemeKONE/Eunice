@@ -549,21 +549,6 @@ function animateContactCard(card) {
 }
 
 /**
- * Force l'affichage des approach-items si les animations ne fonctionnent pas
- */
-function forceShowApproachItems() {
-    const approachItems = document.querySelectorAll('.approach-item');
-    
-    approachItems.forEach(item => {
-        if (!item.classList.contains('animate')) {
-            item.style.opacity = '1';
-            item.style.transform = 'translateX(0)';
-            item.classList.add('animate');
-        }
-    });
-}
-
-/**
  * Initialisation des animations au scroll
  */
 function initScrollAnimations() {
@@ -577,11 +562,6 @@ function initScrollAnimations() {
         }
         scrollObserver.observe(element);
     });
-    
-    // Forcer l'affichage des approach-items après 3 secondes si pas d'animation
-    setTimeout(() => {
-        forceShowApproachItems();
-    }, 3000);
 }
 
 // ===== ANIMATIONS HÉRO =====
@@ -994,9 +974,6 @@ function handleResize() {
         const hiddenElements = document.querySelectorAll('.scroll-animate:not(.animate)');
         hiddenElements.forEach(el => scrollObserver.observe(el));
     }
-    
-    // Re-forcer l'affichage des approach-items si nécessaire
-    forceShowApproachItems();
 }
 
 // ===== ÉVÉNEMENTS =====
@@ -1109,13 +1086,6 @@ function injectDynamicStyles() {
             z-index: 1000;
             isolation: isolate;
         }
-        
-        /* Fix pour approach-items qui n'apparaissent pas */
-        .approach-item {
-            opacity: 1 !important;
-            transform: translateX(0) !important;
-            display: flex !important;
-        }
     `;
     document.head.appendChild(style);
 }
@@ -1143,7 +1113,6 @@ if (typeof window !== 'undefined') {
         animateHighlightCard,
         animateAboutQuote,
         initStickyNavbar,
-        forceShowApproachItems,
         navbar,
         hamburger,
         navMenu
