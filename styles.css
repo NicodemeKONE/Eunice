@@ -1968,7 +1968,7 @@ body {
 /* Mode sombre (optionnel) */
 @media (prefers-color-scheme: dark) {
     :root {
-        --primary-bg: #1a1a1a;
+        --primary-bg: #787373;
         --secondary-bg: #2d2d2d;
         --surface: #1e1e1e;
         --text-primary: #191929;
