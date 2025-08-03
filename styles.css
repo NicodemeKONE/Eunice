@@ -1909,34 +1909,36 @@ body {
     }
 }
 
+
+
 @media (max-width: 480px) {
-    /* Très petits écrans */
-    .container {
-        padding: 0 var(--space-md);
-    }
+   /* Très petits écrans */
+   .container {
+       padding: 0 var(--space-md);
+   }
 
-    .section-title {
-        font-size: 2rem;
-    }
+   .section-title {
+       font-size: 2rem;
+   }
 
-    .profile-card {
-        padding: var(--space-lg);
-    }
+   .profile-card {
+       padding: var(--space-lg);
+   }
 
-    .hero-title {
-        font-size: 2rem;
-    }
+   .hero-title {
+       font-size: 2rem;
+   }
 
-    /* About mobile très petit */
-    .approach-item {
-        flex-direction: column;
-        text-align: center;
-        gap: var(--space-md);
-    }
+   /* About mobile très petit */
+   .approach-item {
+       flex-direction: column;
+       text-align: center;
+       gap: var(--space-md);
+   }
 
-    .approach-icon {
-        align-self: center;
-    }
+   .approach-icon {
+       align-self: center;
+   }
 }
 
 /* ===== ACCESSIBILITÉ ===== */
@@ -1944,66 +1946,71 @@ body {
 .btn:focus,
 .nav-link:focus,
 .social-link:focus {
-    outline: 2px solid var(--accent-blue);
-    outline-offset: 2px;
-    border-radius: var(--radius-sm);
+   outline: 2px solid var(--accent-blue);
+   outline-offset: 2px;
+   border-radius: var(--radius-sm);
 }
 
 /* Réduction des animations pour les utilisateurs sensibles */
 @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-    
-    .floating-shapes,
-    .profile-ring {
-        animation: none;
-    }
+   *,
+   *::before,
+   *::after {
+       animation-duration: 0.01ms !important;
+       animation-iteration-count: 1 !important;
+       transition-duration: 0.01ms !important;
+   }
+   
+   .floating-shapes,
+   .profile-ring {
+       animation: none;
+   }
 }
 
-/* Mode sombre (optionnel) */
+/* Fix pour hamburger en mode sombre */
+.bar {
+   background: #1d1d1f; /* Force la couleur sombre pour le hamburger */
+}
+
+/* Mode sombre grisâtre */
 @media (prefers-color-scheme: dark) {
-    :root {
-        --primary-bg: #787373;
-        --secondary-bg: #2d2d2d;
-        --surface: #1e1e1e;
-        --text-primary: #191929;
-        --text-secondary: #a1a1a6;
-        --text-tertiary: #8e8e93;
-        --divider: rgba(255, 255, 255, 0.1);
-    }
+   :root {
+       --primary-bg: #2a2a2a;        /* Arrière-plan principal gris foncé */
+       --secondary-bg: #3a3a3a;      /* Arrière-plan secondaire gris moyen */
+       --surface: #404040;           /* Surface des cartes gris */
+       --text-primary: #e5e5e5;      /* Texte principal blanc cassé */
+       --text-secondary: #b8b8b8;    /* Texte secondaire gris clair */
+       --text-tertiary: #9a9a9a;     /* Texte tertiaire gris moyen */
+       --divider: rgba(255, 255, 255, 0.15); /* Lignes de séparation */
+   }
 }
 
 /* Print styles */
 @media print {
-    .navbar,
-    .footer,
-    .floating-shapes,
-    .hero-background {
-        display: none;
-    }
-    
-    .hero {
-        background: none;
-        color: black;
-        min-height: auto;
-        padding: var(--space-lg) 0;
-    }
-    
-    .section {
-        page-break-inside: avoid;
-        padding: var(--space-md) 0;
-    }
-    
-    .btn {
-        border: 1px solid black;
-        color: black;
-        background: white;
-    }
+   .navbar,
+   .footer,
+   .floating-shapes,
+   .hero-background {
+       display: none;
+   }
+   
+   .hero {
+       background: none;
+       color: black;
+       min-height: auto;
+       padding: var(--space-lg) 0;
+   }
+   
+   .section {
+       page-break-inside: avoid;
+       padding: var(--space-md) 0;
+   }
+   
+   .btn {
+       border: 1px solid black;
+       color: black;
+       background: white;
+   }
 }
 
 /* Performance optimizations */
@@ -2015,7 +2022,7 @@ body {
 .social-link,
 .approach-item,
 .highlight-card {
-    will-change: transform;
+   will-change: transform;
 }
 
 /* Fin du fichier CSS */
