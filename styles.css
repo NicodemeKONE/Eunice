@@ -2049,11 +2049,11 @@ body {
 /* Fin du fichier CSS */
 
 /* SOLUTION MOBILE SANS ANIMATIONS */
-@media (max-width: 767px) {
+/* @media (max-width: 767px) {
     .about-highlights,
     .approach-item,
     .highlight-card {
         opacity: 1 !important;
         transform: none !important;
     }
-}
+} */

@@ -1,6 +1,6 @@
 /* ===================================================
-   PORTFOLIO LAMAH MAA EUNICE - JAVASCRIPT
-   Animations fluides et interactions modernes
+   PORTFOLIO LAMAH MAA EUNICE - ANIMATIONS COMPLÈTES
+   Toutes les animations mobile + desktop avec protection spéciale
    =================================================== */
 
 // ===== VARIABLES GLOBALES =====
@@ -9,19 +9,16 @@ const hamburger = document.getElementById('hamburger');
 const navMenu = document.getElementById('nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
 
-// Variables pour les performances
-let lastScrollTop = 0;
-let isScrolling = false;
-let resizeTimer = null;
-
-// Variables pour la gestion mobile
+// État global optimisé
 let isMobile = false;
-let parallaxEventListeners = [];
+let scrollObserver = null;
+let isScrolling = false;
+let lastScrollTop = 0;
+let resizeTimer = null;
+let animationsReady = false;
+let highlightCardsProtected = false;
 
 // ===== UTILITAIRES =====
-/**
- * Fonction de throttle pour optimiser les performances
- */
 function throttle(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -34,9 +31,6 @@ function throttle(func, wait) {
     };
 }
 
-/**
- * Fonction de debounce pour les événements de redimensionnement
- */
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -49,156 +43,153 @@ function debounce(func, wait) {
     };
 }
 
-/**
- * Vérification du support des animations CSS
- */
+function detectMobile() {
+    return window.innerWidth <= 767 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 function supportsAnimations() {
     const el = document.createElement('div');
     return typeof el.style.animationName !== 'undefined';
 }
 
-/**
- * Détection de la préférence utilisateur pour les animations réduites
- */
 function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-/**
- * Détection mobile améliorée
- */
-function detectMobile() {
-    return window.innerWidth <= 767;
-}
-
-// ===== CORRECTION MOBILE SPACING - VERSION DÉFINITIVE =====
-/**
- * Correction complète des espacements sur mobile
- */
-function fixMobileSpacing() {
-    isMobile = detectMobile();
-    
-    if (isMobile) {
-        const aboutSection = document.querySelector('.about');
-        const expertiseSection = document.querySelector('.expertise');
-        const aboutHighlights = document.querySelector('.about-highlights');
-        const aboutContent = document.querySelector('.about-content');
-        
-        if (aboutSection) {
-            aboutSection.style.paddingBottom = '0px';
-            aboutSection.style.marginBottom = '0px';
-            aboutSection.style.transform = 'none';
-        }
-        
-        if (expertiseSection) {
-            expertiseSection.style.paddingTop = '8px';
-            expertiseSection.style.marginTop = '0px';
-            expertiseSection.style.transform = 'none';
-        }
-        
-        if (aboutHighlights) {
-            aboutHighlights.style.transform = 'none';
-            aboutHighlights.style.position = 'static';
-            aboutHighlights.style.top = 'auto';
-        }
-        
-        if (aboutContent) {
-            aboutContent.style.transform = 'none';
-        }
-        
-        // Désactiver complètement le parallax sur mobile
-        const shapes = document.querySelectorAll('.shape');
-        shapes.forEach(shape => {
-            shape.style.transform = 'none';
-            shape.style.animation = 'none';
-        });
-        
-        // Supprimer tous les event listeners parallax
-        removeParallaxEventListeners();
-    } else {
-        // Réactiver le parallax sur desktop
-        if (parallaxEventListeners.length === 0) {
-            initParallaxEffect();
-            initAboutParallax();
-        }
+function safeExecute(func, errorMessage = 'Erreur') {
+    try {
+        func();
+    } catch (error) {
+        console.warn(errorMessage + ':', error);
     }
 }
 
-/**
- * Suppression des event listeners parallax
- */
-function removeParallaxEventListeners() {
-    parallaxEventListeners.forEach(listener => {
-        window.removeEventListener('scroll', listener);
+// ===== PROTECTION SPÉCIALE HIGHLIGHT CARDS =====
+function protectHighlightCards() {
+    const highlightCards = document.querySelectorAll('.highlight-card');
+    
+    highlightCards.forEach((card, index) => {
+        // Protection immédiate
+        card.style.setProperty('opacity', '1', 'important');
+        card.style.setProperty('transform', 'none', 'important');
+        card.style.setProperty('display', 'block', 'important');
+        card.classList.add('highlight-protected');
+        
+        // Protection des éléments internes
+        const icon = card.querySelector('.highlight-icon');
+        const texts = card.querySelectorAll('h4, p');
+        
+        if (icon) {
+            icon.style.setProperty('transform', 'scale(1) rotate(0deg)', 'important');
+        }
+        
+        texts.forEach(text => {
+            text.style.setProperty('opacity', '1', 'important');
+            text.style.setProperty('transform', 'translateY(0)', 'important');
+        });
     });
-    parallaxEventListeners = [];
+    
+    highlightCardsProtected = true;
+    console.log(`🛡️ Protection spéciale activée pour ${highlightCards.length} highlight cards`);
+}
+
+function ensureHighlightCardsVisibility() {
+    setTimeout(() => {
+        protectHighlightCards();
+    }, 100);
+    
+    setTimeout(() => {
+        protectHighlightCards();
+    }, 500);
+    
+    setTimeout(() => {
+        protectHighlightCards();
+    }, 1000);
+}
+
+// ===== SYSTÈME D'ANIMATION AVEC PROTECTION =====
+function createSafeAnimation(element, animationFunc, protectionDelay = 300) {
+    if (!element) return;
+    
+    // Pour les highlight cards : protection immédiate + animation
+    if (element.classList.contains('highlight-card')) {
+        // 1. Protection immédiate
+        element.style.setProperty('opacity', '1', 'important');
+        element.style.setProperty('display', 'block', 'important');
+        element.classList.add('highlight-protected');
+        
+        // 2. Animation (si desktop et pas reduced motion)
+        if (!isMobile && !prefersReducedMotion() && animationFunc) {
+            // Reset pour animation sur desktop
+            if (!element.classList.contains('highlight-protected')) {
+                element.style.removeProperty('opacity');
+                element.style.removeProperty('transform');
+            }
+            animationFunc();
+        }
+        
+        // 3. Protection finale garantie
+        setTimeout(() => {
+            protectHighlightCards();
+        }, protectionDelay);
+        
+        return;
+    }
+    
+    // Pour les autres éléments : animation normale avec fallback
+    if (animationFunc && typeof animationFunc === 'function') {
+        animationFunc();
+        
+        // Fallback de sécurité
+        setTimeout(() => {
+            if (!element.classList.contains('animate')) {
+                element.style.setProperty('opacity', '1', 'important');
+                element.style.setProperty('transform', 'none', 'important');
+                element.classList.add('animate');
+            }
+        }, isMobile ? 400 : 600);
+    }
 }
 
 // ===== NAVIGATION STICKY =====
-/**
- * Toggle du menu mobile avec animations fluides
- */
 function toggleMobileMenu() {
     const isActive = hamburger.classList.contains('active');
     
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
     
-    // Prévenir le scroll du body quand le menu est ouvert
     document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
     
-    // Améliorer l'accessibilité
     hamburger.setAttribute('aria-expanded', !isActive);
     navMenu.setAttribute('aria-hidden', isActive);
 }
 
-/**
- * Fermeture du menu mobile
- */
 function closeMobileMenu() {
     hamburger.classList.remove('active');
     navMenu.classList.remove('active');
     document.body.style.overflow = '';
     
-    // Accessibilité
     hamburger.setAttribute('aria-expanded', 'false');
     navMenu.setAttribute('aria-hidden', 'true');
 }
 
-/**
- * Gestion optimisée des effets de scroll sur la navbar sticky
- */
 function handleNavbarScroll() {
     if (isScrolling) return;
     
     isScrolling = true;
     requestAnimationFrame(() => {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const scrollThreshold = 50;
         
-        // Effet glassmorphism au scroll - plus rapide pour sticky
-        if (scrollTop > scrollThreshold) {
+        if (scrollTop > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
-        }
-        
-        // Réappliquer les corrections mobile si nécessaire
-        if (isMobile) {
-            const aboutHighlights = document.querySelector('.about-highlights');
-            if (aboutHighlights) {
-                aboutHighlights.style.transform = 'none';
-                aboutHighlights.style.position = 'static';
-            }
         }
         
         isScrolling = false;
     });
 }
 
-/**
- * Mise à jour optimisée du lien de navigation actif pour sticky
- */
 function updateActiveNavLink() {
     const sections = document.querySelectorAll('section[id]');
     const scrollPos = window.scrollY + 100;
@@ -209,7 +200,6 @@ function updateActiveNavLink() {
         const sectionId = section.getAttribute('id');
         const correspondingLink = document.querySelector(`.nav-link[href="#${sectionId}"]`);
 
-        // Ajustement pour le comportement sticky
         if (scrollPos >= sectionTop - 50 && scrollPos < sectionTop + sectionHeight - 50) {
             navLinks.forEach(link => link.classList.remove('active'));
             if (correspondingLink) {
@@ -219,18 +209,12 @@ function updateActiveNavLink() {
     });
 }
 
-// ===== SMOOTH SCROLLING OPTIMISÉ POUR STICKY =====
-/**
- * Calcul dynamique des offsets pour sticky navbar
- */
+// ===== SMOOTH SCROLLING =====
 function calculateScrollOffset(targetElement) {
     const navbarHeight = navbar.offsetHeight;
     return navbarHeight + 10;
 }
 
-/**
- * Smooth scrolling optimisé pour navbar sticky
- */
 function initSmoothScrolling() {
     const anchorLinks = document.querySelectorAll('a[href^="#"]');
     
@@ -252,7 +236,6 @@ function initSmoothScrolling() {
                     behavior: 'smooth'
                 });
                 
-                // Focus management pour l'accessibilité
                 targetSection.setAttribute('tabindex', '-1');
                 targetSection.focus();
                 setTimeout(() => {
@@ -263,96 +246,348 @@ function initSmoothScrolling() {
     });
 }
 
-// ===== ANIMATIONS AU SCROLL =====
-/**
- * Configuration de l'Intersection Observer pour les animations
- */
-const observerOptions = {
-    threshold: [0.1, 0.3],
-    rootMargin: '-80px 0px -50px 0px'
-};
+// ===== ANIMATIONS COMPLÈTES AVEC PROTECTION =====
 
 /**
- * Callback pour l'Intersection Observer
- */
-function handleIntersection(entries) {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting && entry.intersectionRatio > 0.1) {
-            const element = entry.target;
-            const delay = parseInt(element.dataset.delay) || 0;
-            
-            // Animation avec délai personnalisé
-            setTimeout(() => {
-                element.classList.add('animate');
-                
-                // Animations spéciales pour certains éléments
-                if (element.classList.contains('expertise-card')) {
-                    animateExpertiseCard(element);
-                } else if (element.classList.contains('quality-item')) {
-                    animateQualityItem(element);
-                } else if (element.classList.contains('contact-card') || element.classList.contains('streamlit-form')) {
-                    animateContactCard(element);
-                } else if (element.classList.contains('portfolio-item')) {
-                    animatePortfolioItem(element);
-                } else if (element.classList.contains('journey-item')) {
-                    animateJourneyItem(element);
-                } else if (element.classList.contains('about-text')) {
-                    animateAboutText(element);
-                } else if (element.classList.contains('about-highlights')) {
-                    animateAboutHighlights(element);
-                } else if (element.classList.contains('approach-item')) {
-                    animateApproachItem(element);
-                } else if (element.classList.contains('highlight-card')) {
-                    animateHighlightCard(element);
-                } else if (element.classList.contains('about-quote')) {
-                    animateAboutQuote(element);
-                }
-            }, delay);
-            
-            // Ne plus observer cet élément
-            scrollObserver.unobserve(element);
-        }
-    });
-}
-
-// Création de l'observer
-const scrollObserver = new IntersectionObserver(handleIntersection, observerOptions);
-
-/**
- * Animation spéciale pour les cartes d'expertise
+ * Animation des cartes d'expertise
  */
 function animateExpertiseCard(card) {
     const skillItems = card.querySelectorAll('.skill-item');
     const icon = card.querySelector('.expertise-icon');
     
-    // Animation de l'icône
     if (icon && !prefersReducedMotion()) {
         icon.style.transform = 'scale(0)';
         icon.style.transition = 'transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
         
         setTimeout(() => {
             icon.style.transform = 'scale(1)';
-        }, 200);
+        }, isMobile ? 100 : 200);
     }
     
-    // Animation en cascade des skill items
     skillItems.forEach((item, index) => {
         if (!prefersReducedMotion()) {
             item.style.opacity = '0';
             item.style.transform = 'translateX(-20px)';
-            item.style.transition = `all 0.4s ease ${index * 100}ms`;
+            item.style.transition = `all 0.4s ease ${index * (isMobile ? 50 : 100)}ms`;
             
             setTimeout(() => {
                 item.style.opacity = '1';
                 item.style.transform = 'translateX(0)';
-            }, 300 + (index * 100));
+            }, (isMobile ? 150 : 300) + (index * (isMobile ? 50 : 100)));
         }
     });
+    
+    setTimeout(() => {
+        card.classList.add('animate');
+    }, isMobile ? 300 : 600);
 }
 
 /**
- * Animation spéciale pour les éléments de qualités
+ * Animation des highlight cards - PROTECTION SPÉCIALE
  */
+function animateHighlightCard(card) {
+    // PROTECTION IMMÉDIATE ABSOLUE
+    card.style.setProperty('opacity', '1', 'important');
+    card.style.setProperty('display', 'block', 'important');
+    card.classList.add('highlight-protected');
+    
+    const icon = card.querySelector('.highlight-icon');
+    const textElements = card.querySelectorAll('h4, p');
+    
+    // Protection des éléments internes
+    if (icon) {
+        icon.style.setProperty('transform', 'scale(1) rotate(0deg)', 'important');
+    }
+    textElements.forEach(text => {
+        text.style.setProperty('opacity', '1', 'important');
+        text.style.setProperty('transform', 'translateY(0)', 'important');
+    });
+    
+    // Animation SEULEMENT sur desktop et si pas de reduced motion
+    if (!isMobile && !prefersReducedMotion()) {
+        // Animation de l'icône (sans risquer de la cacher)
+        if (icon && !icon.classList.contains('highlight-protected')) {
+            icon.style.transform = 'scale(0) rotate(180deg)';
+            icon.style.transition = 'transform 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            
+            setTimeout(() => {
+                icon.style.transform = 'scale(1) rotate(0deg)';
+            }, 100);
+        }
+        
+        // Animation du texte (avec protection)
+        textElements.forEach((el, index) => {
+            if (!el.classList.contains('highlight-protected')) {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(15px)';
+                el.style.transition = `all 0.4s ease ${index * 100}ms`;
+                
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 400 + (index * 100));
+            }
+        });
+    }
+    
+    // PROTECTION FINALE GARANTIE
+    setTimeout(() => {
+        card.style.setProperty('opacity', '1', 'important');
+        card.style.setProperty('display', 'block', 'important');
+        if (icon) icon.style.setProperty('transform', 'scale(1) rotate(0deg)', 'important');
+        textElements.forEach(text => {
+            text.style.setProperty('opacity', '1', 'important');
+            text.style.setProperty('transform', 'translateY(0)', 'important');
+        });
+        card.classList.add('animate');
+    }, isMobile ? 200 : 800);
+}
+
+/**
+ * Animation des highlights - GESTION ULTRA-SÉCURISÉE
+ */
+function animateAboutHighlights(highlightsElement) {
+    // PROTECTION IMMÉDIATE DE TOUS LES HIGHLIGHT CARDS
+    protectHighlightCards();
+    
+    const cards = highlightsElement.querySelectorAll('.highlight-card');
+    
+    cards.forEach((card, index) => {
+        // Protection immédiate pour chaque carte
+        card.style.setProperty('opacity', '1', 'important');
+        card.style.setProperty('display', 'block', 'important');
+        
+        setTimeout(() => {
+            createSafeAnimation(card, () => animateHighlightCard(card), 200);
+        }, index * (isMobile ? 100 : 200));
+    });
+    
+    // Protections multiples dans le temps
+    setTimeout(() => protectHighlightCards(), 500);
+    setTimeout(() => protectHighlightCards(), 1000);
+    setTimeout(() => protectHighlightCards(), 1500);
+}
+
+/**
+ * Animation des approach items
+ */
+function animateApproachItem(item) {
+    const icon = item.querySelector('.approach-icon');
+    const text = item.querySelector('.approach-text');
+    
+    if (!prefersReducedMotion()) {
+        if (icon) {
+            icon.style.transform = 'scale(0) rotate(-90deg)';
+            icon.style.transition = 'transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            
+            setTimeout(() => {
+                icon.style.transform = 'scale(1) rotate(0deg)';
+            }, isMobile ? 100 : 200);
+        }
+        
+        if (text) {
+            text.style.opacity = '0';
+            text.style.transform = 'translateX(20px)';
+            text.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                text.style.opacity = '1';
+                text.style.transform = 'translateX(0)';
+            }, isMobile ? 150 : 300);
+        }
+    }
+    
+    setTimeout(() => {
+        item.classList.add('animate');
+        if (icon) icon.style.transform = 'scale(1) rotate(0deg)';
+        if (text) {
+            text.style.opacity = '1';
+            text.style.transform = 'translateX(0)';
+        }
+    }, isMobile ? 300 : 600);
+}
+
+/**
+ * Animation du texte À propos
+ */
+function animateAboutText(textElement) {
+    const sections = textElement.querySelectorAll('.about-intro, .about-philosophy, .about-approach');
+    
+    sections.forEach((section, index) => {
+        if (!prefersReducedMotion()) {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(30px)';
+            section.style.transition = `all 0.6s ease ${index * (isMobile ? 100 : 200)}ms`;
+            
+            setTimeout(() => {
+                section.style.opacity = '1';
+                section.style.transform = 'translateY(0)';
+            }, index * (isMobile ? 100 : 200));
+        }
+    });
+    
+    const approachItems = textElement.querySelectorAll('.approach-item');
+    approachItems.forEach((item, index) => {
+        setTimeout(() => {
+            createSafeAnimation(item, () => animateApproachItem(item));
+        }, (isMobile ? 300 : 600) + (index * (isMobile ? 75 : 150)));
+    });
+    
+    setTimeout(() => {
+        sections.forEach(section => {
+            section.style.opacity = '1';
+            section.style.transform = 'translateY(0)';
+        });
+        approachItems.forEach(item => {
+            item.style.opacity = '1';
+            item.style.transform = 'translateX(0)';
+            item.classList.add('animate');
+        });
+    }, isMobile ? 800 : 1500);
+}
+
+/**
+ * Animation de la citation
+ */
+function animateAboutQuote(quoteElement) {
+    const blockquote = quoteElement.querySelector('blockquote');
+    
+    if (!prefersReducedMotion() && blockquote) {
+        blockquote.style.transform = 'scale(0.95)';
+        blockquote.style.opacity = '0';
+        blockquote.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
+        
+        setTimeout(() => {
+            blockquote.style.transform = 'scale(1)';
+            blockquote.style.opacity = '1';
+        }, isMobile ? 100 : 200);
+        
+        const text = blockquote.querySelector('p');
+        const cite = blockquote.querySelector('cite');
+        
+        if (text) {
+            text.style.opacity = '0';
+            text.style.transform = 'translateY(20px)';
+            text.style.transition = `all 0.6s ease ${isMobile ? '0.2s' : '0.4s'}`;
+            
+            setTimeout(() => {
+                text.style.opacity = '1';
+                text.style.transform = 'translateY(0)';
+            }, isMobile ? 200 : 400);
+        }
+        
+        if (cite) {
+            cite.style.opacity = '0';
+            cite.style.transform = 'translateY(10px)';
+            cite.style.transition = `all 0.4s ease ${isMobile ? '0.4s' : '0.8s'}`;
+            
+            setTimeout(() => {
+                cite.style.opacity = '1';
+                cite.style.transform = 'translateY(0)';
+            }, isMobile ? 400 : 800);
+        }
+    }
+    
+    setTimeout(() => {
+        if (blockquote) {
+            blockquote.style.opacity = '1';
+            blockquote.style.transform = 'scale(1)';
+        }
+        quoteElement.classList.add('animate');
+    }, isMobile ? 600 : 1200);
+}
+
+/**
+ * Autres animations (portfolio, parcours, etc.)
+ */
+function animatePortfolioItem(item) {
+    const image = item.querySelector('.project-image');
+    const content = item.querySelector('.project-content');
+    const tags = item.querySelectorAll('.tag');
+    
+    if (!prefersReducedMotion()) {
+        if (image) {
+            image.style.transform = 'translateY(-20px)';
+            image.style.opacity = '0.8';
+            image.style.transition = 'all 0.6s ease';
+            
+            setTimeout(() => {
+                image.style.transform = 'translateY(0)';
+                image.style.opacity = '1';
+            }, isMobile ? 100 : 200);
+        }
+        
+        if (content) {
+            content.style.transform = 'translateY(20px)';
+            content.style.opacity = '0';
+            content.style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                content.style.transform = 'translateY(0)';
+                content.style.opacity = '1';
+            }, isMobile ? 200 : 400);
+        }
+        
+        tags.forEach((tag, index) => {
+            tag.style.opacity = '0';
+            tag.style.transform = 'scale(0.8)';
+            tag.style.transition = `all 0.3s ease ${index * (isMobile ? 25 : 50)}ms`;
+            
+            setTimeout(() => {
+                tag.style.opacity = '1';
+                tag.style.transform = 'scale(1)';
+            }, (isMobile ? 300 : 600) + (index * (isMobile ? 25 : 50)));
+        });
+    }
+    
+    setTimeout(() => {
+        item.classList.add('animate');
+    }, isMobile ? 400 : 800);
+}
+
+function animateJourneyItem(item) {
+    const marker = item.querySelector('.journey-marker');
+    const content = item.querySelector('.journey-content');
+    const badges = item.querySelectorAll('.tech-badge');
+    
+    if (!prefersReducedMotion()) {
+        if (marker) {
+            marker.style.transform = 'scale(0)';
+            marker.style.transition = 'transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
+            
+            setTimeout(() => {
+                marker.style.transform = 'scale(1)';
+            }, isMobile ? 50 : 100);
+        }
+        
+        if (content) {
+            content.style.opacity = '0';
+            content.style.transform = 'translateX(-30px)';
+            content.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            
+            setTimeout(() => {
+                content.style.opacity = '1';
+                content.style.transform = 'translateX(0)';
+            }, isMobile ? 150 : 300);
+        }
+        
+        badges.forEach((badge, index) => {
+            badge.style.opacity = '0';
+            badge.style.transform = 'translateY(10px)';
+            badge.style.transition = `all 0.3s ease ${index * (isMobile ? 50 : 100)}ms`;
+            
+            setTimeout(() => {
+                badge.style.opacity = '1';
+                badge.style.transform = 'translateY(0)';
+            }, (isMobile ? 300 : 600) + (index * (isMobile ? 50 : 100)));
+        });
+    }
+    
+    setTimeout(() => {
+        item.classList.add('animate');
+    }, isMobile ? 500 : 1000);
+}
+
 function animateQualityItem(item) {
     const icon = item.querySelector('.quality-icon');
     
@@ -362,258 +597,14 @@ function animateQualityItem(item) {
         
         setTimeout(() => {
             icon.style.transform = 'scale(1) rotate(0deg)';
-        }, 100);
+        }, isMobile ? 50 : 100);
     }
+    
+    setTimeout(() => {
+        item.classList.add('animate');
+    }, isMobile ? 200 : 400);
 }
 
-/**
- * Animation spéciale pour les éléments de portfolio
- */
-function animatePortfolioItem(item) {
-    const image = item.querySelector('.project-image');
-    const content = item.querySelector('.project-content');
-    const tags = item.querySelectorAll('.tag');
-    
-    if (!prefersReducedMotion()) {
-        // Animation de l'image avec un effet de slide
-        if (image) {
-            image.style.transform = 'translateY(-20px)';
-            image.style.opacity = '0.8';
-            image.style.transition = 'all 0.6s ease';
-            
-            setTimeout(() => {
-                image.style.transform = 'translateY(0)';
-                image.style.opacity = '1';
-            }, 200);
-        }
-        
-        // Animation du contenu
-        if (content) {
-            content.style.transform = 'translateY(20px)';
-            content.style.opacity = '0';
-            content.style.transition = 'all 0.5s ease';
-            
-            setTimeout(() => {
-                content.style.transform = 'translateY(0)';
-                content.style.opacity = '1';
-            }, 400);
-        }
-        
-        // Animation des tags en cascade
-        tags.forEach((tag, index) => {
-            tag.style.opacity = '0';
-            tag.style.transform = 'scale(0.8)';
-            tag.style.transition = `all 0.3s ease ${index * 50}ms`;
-            
-            setTimeout(() => {
-                tag.style.opacity = '1';
-                tag.style.transform = 'scale(1)';
-            }, 600 + (index * 50));
-        });
-    }
-}
-
-/**
- * Animation spéciale pour les éléments de parcours
- */
-function animateJourneyItem(item) {
-    const marker = item.querySelector('.journey-marker');
-    const content = item.querySelector('.journey-content');
-    const badges = item.querySelectorAll('.tech-badge');
-    
-    if (!prefersReducedMotion()) {
-        // Animation du marqueur avec bounce
-        if (marker) {
-            marker.style.transform = 'scale(0)';
-            marker.style.transition = 'transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-            
-            setTimeout(() => {
-                marker.style.transform = 'scale(1)';
-            }, 100);
-        }
-        
-        // Animation du contenu avec slide
-        if (content) {
-            content.style.opacity = '0';
-            content.style.transform = 'translateX(-30px)';
-            content.style.transition = 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-            
-            setTimeout(() => {
-                content.style.opacity = '1';
-                content.style.transform = 'translateX(0)';
-            }, 300);
-        }
-        
-        // Animation des badges technologiques
-        badges.forEach((badge, index) => {
-            badge.style.opacity = '0';
-            badge.style.transform = 'translateY(10px)';
-            badge.style.transition = `all 0.3s ease ${index * 100}ms`;
-            
-            setTimeout(() => {
-                badge.style.opacity = '1';
-                badge.style.transform = 'translateY(0)';
-            }, 800 + (index * 100));
-        });
-    }
-}
-
-/**
- * Animation spéciale pour le texte À propos
- */
-function animateAboutText(textElement) {
-    const sections = textElement.querySelectorAll('.about-intro, .about-philosophy, .about-approach');
-    
-    sections.forEach((section, index) => {
-        if (!prefersReducedMotion()) {
-            section.style.opacity = '0';
-            section.style.transform = 'translateY(30px)';
-            section.style.transition = `all 0.6s ease ${index * 200}ms`;
-            
-            setTimeout(() => {
-                section.style.opacity = '1';
-                section.style.transform = 'translateY(0)';
-            }, index * 200);
-        }
-    });
-    
-    // Animation spéciale pour les approach items
-    const approachItems = textElement.querySelectorAll('.approach-item');
-    approachItems.forEach((item, index) => {
-        setTimeout(() => {
-            animateApproachItem(item);
-        }, 600 + (index * 150));
-    });
-}
-
-/**
- * Animation spéciale pour les éléments d'approche
- */
-function animateApproachItem(item) {
-    const icon = item.querySelector('.approach-icon');
-    
-    if (!prefersReducedMotion()) {
-        // Animation de l'icône avec rotation
-        if (icon) {
-            icon.style.transform = 'scale(0) rotate(-90deg)';
-            icon.style.transition = 'transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-            
-            setTimeout(() => {
-                icon.style.transform = 'scale(1) rotate(0deg)';
-            }, 200);
-        }
-        
-        // Effet de glissement du contenu
-        const text = item.querySelector('.approach-text');
-        if (text) {
-            text.style.opacity = '0';
-            text.style.transform = 'translateX(20px)';
-            text.style.transition = 'all 0.5s ease';
-            
-            setTimeout(() => {
-                text.style.opacity = '1';
-                text.style.transform = 'translateX(0)';
-            }, 300);
-        }
-    }
-}
-
-/**
- * Animation spéciale pour les highlights
- */
-function animateAboutHighlights(highlightsElement) {
-    const cards = highlightsElement.querySelectorAll('.highlight-card');
-    
-    cards.forEach((card, index) => {
-        setTimeout(() => {
-            animateHighlightCard(card);
-        }, index * 200);
-    });
-}
-
-/**
- * Animation spéciale pour une carte highlight
- */
-function animateHighlightCard(card) {
-    const icon = card.querySelector('.highlight-icon');
-    
-    if (!prefersReducedMotion()) {
-        // Animation de l'icône avec effet élastique
-        if (icon) {
-            icon.style.transform = 'scale(0) rotate(180deg)';
-            icon.style.transition = 'transform 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55)';
-            
-            setTimeout(() => {
-                icon.style.transform = 'scale(1) rotate(0deg)';
-            }, 100);
-        }
-        
-        // Animation du contenu avec fade
-        const content = card.querySelector('h4, p');
-        if (content) {
-            const textElements = card.querySelectorAll('h4, p');
-            textElements.forEach((el, index) => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(15px)';
-                el.style.transition = `all 0.4s ease ${index * 100}ms`;
-                
-                setTimeout(() => {
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }, 400 + (index * 100));
-            });
-        }
-    }
-}
-
-/**
- * Animation spéciale pour la citation
- */
-function animateAboutQuote(quoteElement) {
-    const blockquote = quoteElement.querySelector('blockquote');
-    
-    if (!prefersReducedMotion() && blockquote) {
-        // Animation avec effet de pulsation
-        blockquote.style.transform = 'scale(0.95)';
-        blockquote.style.opacity = '0';
-        blockquote.style.transition = 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)';
-        
-        setTimeout(() => {
-            blockquote.style.transform = 'scale(1)';
-            blockquote.style.opacity = '1';
-        }, 200);
-        
-        // Animation du texte interne
-        const text = blockquote.querySelector('p');
-        const cite = blockquote.querySelector('cite');
-        
-        if (text) {
-            text.style.opacity = '0';
-            text.style.transform = 'translateY(20px)';
-            text.style.transition = 'all 0.6s ease 0.4s';
-            
-            setTimeout(() => {
-                text.style.opacity = '1';
-                text.style.transform = 'translateY(0)';
-            }, 400);
-        }
-        
-        if (cite) {
-            cite.style.opacity = '0';
-            cite.style.transform = 'translateY(10px)';
-            cite.style.transition = 'all 0.4s ease 0.8s';
-            
-            setTimeout(() => {
-                cite.style.opacity = '1';
-                cite.style.transform = 'translateY(0)';
-            }, 800);
-        }
-    }
-}
-
-/**
- * Animation spéciale pour les cartes de contact
- */
 function animateContactCard(card) {
     const methods = card.querySelectorAll('.contact-method');
     
@@ -621,66 +612,102 @@ function animateContactCard(card) {
         if (!prefersReducedMotion()) {
             method.style.opacity = '0';
             method.style.transform = 'translateY(20px)';
-            method.style.transition = `all 0.5s ease ${index * 150}ms`;
+            method.style.transition = `all 0.5s ease ${index * (isMobile ? 75 : 150)}ms`;
             
             setTimeout(() => {
                 method.style.opacity = '1';
                 method.style.transform = 'translateY(0)';
-            }, index * 150);
+            }, index * (isMobile ? 75 : 150));
         }
     });
-}
-
-/**
- * Force l'affichage des approach-items si les animations ne fonctionnent pas
- */
-function forceShowApproachItems() {
-    const approachItems = document.querySelectorAll('.approach-item');
     
-    approachItems.forEach(item => {
-        if (!item.classList.contains('animate')) {
-            item.style.opacity = '1';
-            item.style.transform = 'translateX(0)';
-            item.classList.add('animate');
+    setTimeout(() => {
+        card.classList.add('animate');
+    }, isMobile ? 300 : 600);
+}
+
+// ===== INTERSECTION OBSERVER ADAPTATIF =====
+const observerOptions = {
+    threshold: isMobile ? [0.05, 0.1] : [0.1, 0.3],
+    rootMargin: isMobile ? '-10px 0px -10px 0px' : '-50px 0px -50px 0px'
+};
+
+function handleIntersection(entries) {
+    entries.forEach((entry, index) => {
+        if (entry.isIntersecting && entry.intersectionRatio > (isMobile ? 0.05 : 0.1)) {
+            const element = entry.target;
+            const delay = parseInt(element.dataset.delay) || 0;
+            
+            setTimeout(() => {
+                element.classList.add('animate');
+                
+                // Animations avec protection spéciale pour highlight cards
+                if (element.classList.contains('expertise-card')) {
+                    createSafeAnimation(element, () => animateExpertiseCard(element));
+                } else if (element.classList.contains('quality-item')) {
+                    createSafeAnimation(element, () => animateQualityItem(element));
+                } else if (element.classList.contains('contact-card') || element.classList.contains('streamlit-form')) {
+                    createSafeAnimation(element, () => animateContactCard(element));
+                } else if (element.classList.contains('portfolio-item')) {
+                    createSafeAnimation(element, () => animatePortfolioItem(element));
+                } else if (element.classList.contains('journey-item')) {
+                    createSafeAnimation(element, () => animateJourneyItem(element));
+                } else if (element.classList.contains('about-text')) {
+                    createSafeAnimation(element, () => animateAboutText(element), 1500);
+                } else if (element.classList.contains('about-highlights')) {
+                    createSafeAnimation(element, () => animateAboutHighlights(element), 1500);
+                } else if (element.classList.contains('approach-item')) {
+                    createSafeAnimation(element, () => animateApproachItem(element));
+                } else if (element.classList.contains('highlight-card')) {
+                    createSafeAnimation(element, () => animateHighlightCard(element), 300);
+                } else if (element.classList.contains('about-quote')) {
+                    createSafeAnimation(element, () => animateAboutQuote(element));
+                }
+            }, delay);
+            
+            scrollObserver.unobserve(element);
         }
     });
 }
 
-/**
- * Initialisation des animations au scroll
- */
 function initScrollAnimations() {
-    if (!supportsAnimations()) return;
+    if (!supportsAnimations()) {
+        protectHighlightCards();
+        return;
+    }
+    
+    // Protection immédiate des highlight cards
+    ensureHighlightCardsVisibility();
+    
+    if (scrollObserver) {
+        scrollObserver.disconnect();
+    }
+    
+    scrollObserver = new IntersectionObserver(handleIntersection, observerOptions);
     
     const animatedElements = document.querySelectorAll('.scroll-animate');
+    
     animatedElements.forEach((element, index) => {
-        // Attribution d'un délai automatique si non spécifié
         if (!element.dataset.delay) {
-            element.dataset.delay = (index % 3) * 100;
+            element.dataset.delay = (index % 3) * (isMobile ? 50 : 100);
         }
         scrollObserver.observe(element);
     });
     
-    // Forcer l'affichage des approach-items après 3 secondes si pas d'animation
-    setTimeout(() => {
-        forceShowApproachItems();
-    }, 3000);
+    animationsReady = true;
+    
+    console.log(`🎬 Animations complètes initialisées (${isMobile ? 'Mobile' : 'Desktop'}) - ${animatedElements.length} éléments`);
 }
 
 // ===== ANIMATIONS HÉRO =====
-/**
- * Animation de chargement pour la section héro
- */
 function initHeroAnimations() {
     if (prefersReducedMotion()) return;
     
-    // Animation des éléments du héro
     const heroElements = document.querySelectorAll('.animate-slide-up');
     heroElements.forEach((element, index) => {
-        element.style.animationDelay = `${index * 200}ms`;
+        element.style.animationDelay = `${index * (isMobile ? 100 : 200)}ms`;
     });
     
-    // Animation de la carte profil
     const profileCard = document.querySelector('.profile-card');
     if (profileCard) {
         profileCard.style.opacity = '0';
@@ -690,31 +717,28 @@ function initHeroAnimations() {
         setTimeout(() => {
             profileCard.style.opacity = '1';
             profileCard.style.transform = 'translateY(0) scale(1)';
-        }, 100);
+        }, isMobile ? 50 : 100);
     }
 }
 
-// ===== EFFETS PARALLAX - VERSION MOBILE-AWARE =====
-/**
- * Effet parallax subtil sur les formes flottantes - SEULEMENT DESKTOP
- */
+// ===== EFFETS PARALLAX (DESKTOP SEULEMENT) =====
 function initParallaxEffect() {
-    if (prefersReducedMotion() || detectMobile()) return;
+    if (prefersReducedMotion() || isMobile) return;
     
     const shapes = document.querySelectorAll('.shape');
     
     function updateParallax() {
-        if (isScrolling || detectMobile()) return;
+        if (isScrolling) return;
         
         isScrolling = true;
         requestAnimationFrame(() => {
             const scrolled = window.pageYOffset;
-            const rate = scrolled * -0.3;
+            const rate = scrolled * -0.2;
             
             shapes.forEach((shape, index) => {
-                const speed = (index + 1) * 0.2;
+                const speed = (index + 1) * 0.15;
                 const translateY = rate * speed;
-                const rotate = scrolled * 0.02;
+                const rotate = scrolled * 0.01;
                 
                 shape.style.transform = `translateY(${translateY}px) rotate(${rotate}deg)`;
             });
@@ -723,17 +747,13 @@ function initParallaxEffect() {
         });
     }
     
-    const parallaxListener = throttle(updateParallax, 16);
-    window.addEventListener('scroll', parallaxListener);
-    parallaxEventListeners.push(parallaxListener);
+    window.addEventListener('scroll', throttle(updateParallax, 16));
 }
 
 // ===== INTERACTIONS AVANCÉES =====
-/**
- * Effets hover avancés pour les cartes
- */
 function initAdvancedHoverEffects() {
-    // Cartes d'expertise avec effet de rotation 3D
+    if (isMobile) return;
+    
     const expertiseCards = document.querySelectorAll('.expertise-card');
     expertiseCards.forEach(card => {
         card.addEventListener('mouseenter', function(e) {
@@ -748,7 +768,6 @@ function initAdvancedHoverEffects() {
             this.style.transform = 'translateY(0) rotateX(0deg)';
         });
         
-        // Effet de suivi de la souris
         card.addEventListener('mousemove', function(e) {
             if (prefersReducedMotion()) return;
             
@@ -764,38 +783,55 @@ function initAdvancedHoverEffects() {
         });
     });
 
-    // Effets hover pour les cartes À propos
-    const aboutCards = document.querySelectorAll('.approach-item, .highlight-card');
-    aboutCards.forEach(card => {
+    // Effets hover SANS risque pour les highlight cards
+    const highlightCards = document.querySelectorAll('.highlight-card');
+    highlightCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
             if (!prefersReducedMotion()) {
-                const icon = this.querySelector('.approach-icon, .highlight-icon');
-                if (icon) {
-                    icon.style.transform = 'scale(1.1) rotate(5deg)';
-                }
+                this.style.transform = 'translateY(-4px)';
+                this.style.boxShadow = '0 8px 24px rgba(0, 122, 255, 0.15)';
             }
         });
         
         card.addEventListener('mouseleave', function() {
-            const icon = this.querySelector('.approach-icon, .highlight-icon');
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '';
+        });
+    });
+
+    const otherCards = document.querySelectorAll('.approach-item, .portfolio-item, .journey-item, .quality-item');
+    otherCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            if (!prefersReducedMotion()) {
+                const icon = this.querySelector('.approach-icon, .quality-icon');
+                if (icon) {
+                    icon.style.transform = 'scale(1.1) rotate(5deg)';
+                }
+                this.style.transform = 'translateY(-4px)';
+                this.style.boxShadow = '0 8px 24px rgba(0, 122, 255, 0.15)';
+            }
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            const icon = this.querySelector('.approach-icon, .quality-icon');
             if (icon) {
                 icon.style.transform = 'scale(1) rotate(0deg)';
             }
+            this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '';
         });
     });
 }
 
-/**
- * Animation des boutons avec effet de vague
- */
 function initButtonAnimations() {
+    if (isMobile) return;
+    
     const buttons = document.querySelectorAll('.btn');
     
     buttons.forEach(button => {
         button.addEventListener('click', function(e) {
             if (prefersReducedMotion()) return;
             
-            // Effet de vague (ripple)
             const ripple = document.createElement('span');
             const rect = this.getBoundingClientRect();
             const size = Math.max(rect.width, rect.height);
@@ -825,9 +861,6 @@ function initButtonAnimations() {
 }
 
 // ===== FILTRES PORTFOLIO =====
-/**
- * Initialisation des filtres de portfolio
- */
 function initPortfolioFilters() {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const portfolioItems = document.querySelectorAll('.portfolio-item');
@@ -836,13 +869,11 @@ function initPortfolioFilters() {
     
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
-            // Mettre à jour les boutons actifs
             filterButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
             
             const filter = this.getAttribute('data-filter');
             
-            // Filtrer les éléments
             portfolioItems.forEach((item, index) => {
                 const categories = item.getAttribute('data-category');
                 const shouldShow = filter === 'all' || categories.includes(filter);
@@ -852,349 +883,187 @@ function initPortfolioFilters() {
                     setTimeout(() => {
                         item.style.opacity = '1';
                         item.style.transform = 'translateY(0)';
-                    }, index * 100);
+                    }, index * (isMobile ? 50 : 100));
                 } else {
                     item.style.opacity = '0';
                     item.style.transform = 'translateY(20px)';
                     setTimeout(() => {
                         item.style.display = 'none';
-                    }, 300);
+                    }, 200);
                 }
             });
         });
     });
 }
 
-// ===== INTERACTIONS SPÉCIALES SECTION À PROPOS =====
-/**
- * Effet de parallax sur la section À propos - SEULEMENT DESKTOP
- */
-function initAboutParallax() {
-    if (prefersReducedMotion() || detectMobile()) return;
-    
-    const aboutSection = document.querySelector('#about');
-    const aboutHighlights = document.querySelector('.about-highlights');
-    
-    if (!aboutSection || !aboutHighlights) return;
-    
-    function updateAboutParallax() {
-        if (detectMobile()) return;
-        
-        const scrolled = window.pageYOffset;
-        const aboutTop = aboutSection.offsetTop;
-        const aboutHeight = aboutSection.offsetHeight;
-        const windowHeight = window.innerHeight;
-        
-        // Calculer si nous sommes dans la section À propos
-        if (scrolled + windowHeight > aboutTop && scrolled < aboutTop + aboutHeight) {
-            const progress = (scrolled + windowHeight - aboutTop) / (aboutHeight + windowHeight);
-            const translateY = (progress - 0.5) * 50;
-            
-            aboutHighlights.style.transform = `translateY(${translateY}px)`;
-        }
-    }
-    
-    const aboutParallaxListener = throttle(updateAboutParallax, 16);
-    window.addEventListener('scroll', aboutParallaxListener);
-    parallaxEventListeners.push(aboutParallaxListener);
-}
-
-/**
- * Animation au survol de la citation
- */
-function initQuoteInteraction() {
-    const quote = document.querySelector('.about-quote blockquote');
-    
-    if (!quote) return;
-    
-    quote.addEventListener('mouseenter', function() {
-        if (!prefersReducedMotion()) {
-            this.style.transform = 'scale(1.02)';
-            this.style.boxShadow = '0 16px 48px rgba(0, 122, 255, 0.25)';
-        }
-    });
-    
-    quote.addEventListener('mouseleave', function() {
-        this.style.transform = 'scale(1)';
-        this.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.12)';
-    });
-}
-
-// ===== GESTION STICKY NAVBAR =====
-/**
- * Optimisation spéciale pour mobile avec navbar sticky
- */
-function initMobileStickyFix() {
-    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    
-    if (isTouchDevice && window.innerWidth <= 768) {
-        // Sur mobile, s'assurer que le comportement sticky fonctionne bien
-        navbar.style.position = 'sticky';
-        navbar.style.top = '0';
-        navbar.style.zIndex = '1000';
-    }
-}
-
-/**
- * Fonction d'initialisation complète pour sticky navbar
- */
-function initStickyNavbar() {
-    // Initialiser les fixes mobile
-    initMobileStickyFix();
-    
-    // Marquer comme initialisé
-    navbar.classList.add('sticky-initialized');
-}
-
-// ===== LAZY LOADING =====
-/**
- * Lazy loading pour les images avec placeholder
- */
-function initLazyLoading() {
-    const images = document.querySelectorAll('img[data-src]');
-    
-    const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                
-                // Effet de fade in
-                img.style.opacity = '0';
-                img.style.transition = 'opacity 0.5s ease';
-                
-                img.src = img.dataset.src;
-                img.onload = () => {
-                    img.style.opacity = '1';
-                    img.classList.add('loaded');
-                };
-                
-                imageObserver.unobserve(img);
-            }
-        });
-    });
-    
-    images.forEach(img => imageObserver.observe(img));
-}
-
 // ===== ACCESSIBILITÉ =====
-/**
- * Gestion de la navigation au clavier
- */
-function initKeyboardNavigation() {
+function initAccessibility() {
     document.addEventListener('keydown', function(e) {
-        // Fermer le menu mobile avec Échap
         if (e.key === 'Escape' && navMenu.classList.contains('active')) {
             closeMobileMenu();
         }
         
-        // Indicateur de navigation clavier
         if (e.key === 'Tab') {
             document.body.classList.add('keyboard-navigation');
         }
     });
     
-    // Retirer l'indicateur lors du clic
     document.addEventListener('mousedown', function() {
         document.body.classList.remove('keyboard-navigation');
     });
-}
-
-/**
- * Focus trap pour le menu mobile
- */
-function initFocusTrap() {
-    const focusableElements = navMenu.querySelectorAll(
-        'a, button, [tabindex]:not([tabindex="-1"])'
-    );
     
-    if (focusableElements.length === 0) return;
+    const focusableElements = navMenu.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
     
-    const firstElement = focusableElements[0];
-    const lastElement = focusableElements[focusableElements.length - 1];
-    
-    navMenu.addEventListener('keydown', function(e) {
-        if (e.key === 'Tab') {
-            if (e.shiftKey) {
-                if (document.activeElement === firstElement) {
+    if (focusableElements.length > 0) {
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        navMenu.addEventListener('keydown', function(e) {
+            if (e.key === 'Tab') {
+                if (e.shiftKey && document.activeElement === firstElement) {
                     lastElement.focus();
                     e.preventDefault();
-                }
-            } else {
-                if (document.activeElement === lastElement) {
+                } else if (!e.shiftKey && document.activeElement === lastElement) {
                     firstElement.focus();
                     e.preventDefault();
                 }
             }
-        }
-    });
-}
-
-// ===== GESTION DES ERREURS =====
-/**
- * Exécution sécurisée avec gestion d'erreurs
- */
-function safeExecute(func, errorMessage = 'Erreur dans l\'exécution') {
-    try {
-        func();
-    } catch (error) {
-        console.warn(errorMessage + ':', error);
+        });
     }
 }
 
-// ===== PERFORMANCE ET MONITORING =====
-/**
- * Monitoring des performances
- */
+// ===== GESTION DU REDIMENSIONNEMENT =====
+function handleResize() {
+    const wasMobile = isMobile;
+    isMobile = detectMobile();
+    
+    if (!isMobile && navMenu.classList.contains('active')) {
+        closeMobileMenu();
+    }
+    
+    if (navbar) {
+        navbar.style.transform = 'translateY(0)';
+    }
+    
+    // Toujours protéger les highlight cards
+    protectHighlightCards();
+    
+    if (wasMobile !== isMobile) {
+        console.log(`📱➡️💻 Changement de mode: ${isMobile ? 'Desktop vers Mobile' : 'Mobile vers Desktop'}`);
+        
+        setTimeout(() => {
+            initScrollAnimations();
+            if (!isMobile) {
+                initAdvancedHoverEffects();
+            }
+        }, 100);
+        
+        setTimeout(() => {
+            protectHighlightCards();
+        }, 200);
+    }
+}
+
+// ===== PERFORMANCE =====
 function initPerformanceMonitoring() {
     if ('performance' in window) {
         window.addEventListener('load', () => {
             const loadTime = performance.now();
+            console.log(`⚡ Portfolio chargé en ${Math.round(loadTime)}ms`);
             
-            // Mesures de performance avancées
             if (performance.getEntriesByType) {
                 const paintEntries = performance.getEntriesByType('paint');
                 paintEntries.forEach(entry => {
-                    // Performance monitoring silencieux
+                    console.log(`🎨 ${entry.name}: ${Math.round(entry.startTime)}ms`);
                 });
             }
         });
     }
 }
 
-/**
- * Optimisation des redimensionnements - VERSION FINALE
- */
-function handleResize() {
-    // Fermer le menu mobile lors du redimensionnement
-    if (window.innerWidth > 768 && navMenu.classList.contains('active')) {
-        closeMobileMenu();
-    }
+// ===== FALLBACK DE SÉCURITÉ RENFORCÉ =====
+function emergencyFallback() {
+    // Fallback rapide pour highlight cards
+    setTimeout(() => {
+        protectHighlightCards();
+    }, 500);
     
-    // Reset des transformations lors du redimensionnement
-    if (navbar) {
-        navbar.style.transform = 'translateY(0)';
-    }
-    
-    // Recalculer l'état mobile
-    const wasMobile = isMobile;
-    const nowMobile = detectMobile();
-    
-    if (wasMobile !== nowMobile) {
-        // Changement d'état mobile/desktop
-        if (nowMobile) {
-            // Passage en mobile : désactiver parallax
-            removeParallaxEventListeners();
-        } else {
-            // Passage en desktop : réactiver parallax
-            if (parallaxEventListeners.length === 0) {
-                safeExecute(initParallaxEffect, 'Erreur lors de la réactivation du parallax');
-                safeExecute(initAboutParallax, 'Erreur lors de la réactivation du parallax About');
-            }
+    // Fallback général
+    setTimeout(() => {
+        const hiddenElements = document.querySelectorAll('[style*="opacity: 0"], .scroll-animate:not(.animate)');
+        
+        if (hiddenElements.length > 0) {
+            console.warn(`🚨 Fallback d'urgence activé pour ${hiddenElements.length} éléments`);
+            hiddenElements.forEach(element => {
+                element.style.setProperty('opacity', '1', 'important');
+                element.style.setProperty('transform', 'none', 'important');
+                element.classList.add('animate');
+            });
         }
-    }
+    }, 1000);
     
-    // Appliquer les corrections mobiles
-    fixMobileSpacing();
+    // Fallback spécial highlight cards
+    setTimeout(() => {
+        const highlightCards = document.querySelectorAll('.highlight-card');
+        let fixedCount = 0;
+        
+        highlightCards.forEach(card => {
+            const styles = window.getComputedStyle(card);
+            if (styles.opacity === '0' || styles.display === 'none') {
+                protectHighlightCards();
+                fixedCount++;
+            }
+        });
+        
+        if (fixedCount > 0) {
+            console.log(`🛡️ Protection d'urgence highlight cards: ${fixedCount} éléments`);
+        }
+    }, 1500);
     
-    // Recalculer les positions pour les animations
-    if (scrollObserver) {
-        const hiddenElements = document.querySelectorAll('.scroll-animate:not(.animate)');
-        hiddenElements.forEach(el => scrollObserver.observe(el));
-    }
-    
-    // Re-forcer l'affichage des approach-items si nécessaire
-    forceShowApproachItems();
+    // Fallback final
+    setTimeout(() => {
+        protectHighlightCards();
+        document.querySelectorAll('.scroll-animate:not(.animate)').forEach(element => {
+            element.style.setProperty('opacity', '1', 'important');
+            element.style.setProperty('transform', 'none', 'important');
+            element.classList.add('animate');
+        });
+    }, 3000);
 }
 
 // ===== ÉVÉNEMENTS =====
-/**
- * Initialisation de tous les événements - VERSION FINALE
- */
 function initEventListeners() {
-    // Navigation
-    hamburger?.addEventListener('click', toggleMobileMenu);
+    if (hamburger) hamburger.addEventListener('click', toggleMobileMenu);
+    
     navLinks.forEach(link => {
         link.addEventListener('click', closeMobileMenu);
     });
     
-    // Fermer le menu en cliquant à l'extérieur
     document.addEventListener('click', (e) => {
         if (!navbar.contains(e.target) && navMenu.classList.contains('active')) {
             closeMobileMenu();
         }
     });
     
-    // Scroll événements avec throttling
     window.addEventListener('scroll', throttle(handleNavbarScroll, 16));
     window.addEventListener('scroll', throttle(updateActiveNavLink, 100));
-    
-    // Redimensionnement avec debouncing + gestion mobile/desktop
     window.addEventListener('resize', debounce(handleResize, 250));
+    window.addEventListener('load', initPerformanceMonitoring);
     
-    // Chargement de la page + correction mobile
+    // Protection highlight cards lors des événements
     window.addEventListener('load', () => {
-        initPerformanceMonitoring();
-        fixMobileSpacing();
+        setTimeout(protectHighlightCards, 100);
     });
     
-    // Correction mobile au changement d'orientation
     window.addEventListener('orientationchange', () => {
         setTimeout(() => {
-            fixMobileSpacing();
-        }, 200);
+            handleResize();
+            protectHighlightCards();
+        }, 300);
     });
 }
 
-// ===== INITIALISATION PRINCIPALE =====
-/**
- * Fonction principale d'initialisation - VERSION FINALE
- */
-function initPortfolio() {
-    // Vérifier que le DOM est prêt
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initPortfolio);
-        return;
-    }
-    
-    // ÉTAPE 1 : Détection mobile et correction prioritaire
-    isMobile = detectMobile();
-    safeExecute(fixMobileSpacing, 'Erreur lors de la correction mobile');
-    
-    // ÉTAPE 2 : Initialisation des fonctionnalités de base
-    safeExecute(initEventListeners, 'Erreur lors de l\'initialisation des événements');
-    safeExecute(initSmoothScrolling, 'Erreur lors de l\'initialisation du smooth scrolling');
-    safeExecute(initScrollAnimations, 'Erreur lors de l\'initialisation des animations de scroll');
-    safeExecute(initPortfolioFilters, 'Erreur lors de l\'initialisation des filtres portfolio');
-    safeExecute(initHeroAnimations, 'Erreur lors de l\'initialisation des animations du héro');
-    
-    // ÉTAPE 3 : Parallax seulement si desktop
-    if (!isMobile) {
-        safeExecute(initParallaxEffect, 'Erreur lors de l\'initialisation du parallax');
-        safeExecute(initAboutParallax, 'Erreur lors de l\'initialisation du parallax À propos');
-    }
-    
-    // ÉTAPE 4 : Autres fonctionnalités
-    safeExecute(initAdvancedHoverEffects, 'Erreur lors de l\'initialisation des effets hover');
-    safeExecute(initButtonAnimations, 'Erreur lors de l\'initialisation des animations de boutons');
-    safeExecute(initLazyLoading, 'Erreur lors de l\'initialisation du lazy loading');
-    safeExecute(initKeyboardNavigation, 'Erreur lors de l\'initialisation de la navigation clavier');
-    safeExecute(initFocusTrap, 'Erreur lors de l\'initialisation du focus trap');
-    safeExecute(initQuoteInteraction, 'Erreur lors de l\'initialisation des interactions citation');
-    safeExecute(initStickyNavbar, 'Erreur lors de l\'initialisation de la navbar sticky');
-    
-    // ÉTAPE 5 : Correction finale mobile
-    if (isMobile) {
-        setTimeout(fixMobileSpacing, 100);
-    }
-    
-    // Marquer le portfolio comme initialisé
-    document.body.classList.add('portfolio-loaded');
-}
-
-// ===== CSS DYNAMIQUE =====
-/**
- * Ajout des styles CSS pour les animations dynamiques - VERSION FINALE
- */
+// ===== CSS DYNAMIQUE AVEC PROTECTION SPÉCIALE =====
 function injectDynamicStyles() {
     const style = document.createElement('style');
     style.textContent = `
@@ -1214,108 +1083,209 @@ function injectDynamicStyles() {
             opacity: 1;
         }
         
-        .approach-item:hover .approach-icon {
-            transform: scale(1.1) rotate(5deg) !important;
+        /* PROTECTION SPÉCIALE HIGHLIGHT CARDS */
+        .highlight-card,
+        .highlight-protected {
+            opacity: 1 !important;
+            display: block !important;
+            visibility: visible !important;
         }
         
-        .highlight-card:hover .highlight-icon {
-            transform: scale(1.1) rotate(5deg) !important;
+        .highlight-card .highlight-icon,
+        .highlight-protected .highlight-icon {
+            transform: scale(1) rotate(0deg) !important;
+        }
+        
+        .highlight-card h4,
+        .highlight-card p,
+        .highlight-protected h4,
+        .highlight-protected p {
+            opacity: 1 !important;
+            transform: translateY(0) !important;
         }
         
         /* Styles pour navbar sticky */
         .navbar {
             transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        
-        /* Compensation pour éviter le jump initial */
-        body.portfolio-loaded {
-            scroll-padding-top: 80px;
-        }
-        
-        /* Amélioration du z-index pour sticky */
-        .navbar {
             z-index: 1000;
             isolation: isolate;
         }
         
-        /* Fix pour approach-items qui n'apparaissent pas */
-        .approach-item {
-            opacity: 1 !important;
-            transform: translateX(0) !important;
-            display: flex !important;
+        body.portfolio-loaded {
+            scroll-padding-top: 80px;
         }
         
-        /* CORRECTION MOBILE ULTRA-PRIORITAIRE */
+        /* Optimisations responsive */
         @media (max-width: 767px) {
-            .about,
-            .about.section,
-            section#about.about.section {
-                padding-bottom: 0 !important;
+            .about {
+                padding-bottom: 8px !important;
                 margin-bottom: 0 !important;
-                transform: none !important;
             }
             
-            .expertise,
-            .expertise.section,
-            section#expertise.expertise.section {
+            .expertise {
                 padding-top: 8px !important;
                 margin-top: 0 !important;
+            }
+            
+            .shape, .floating-shapes {
+                animation: none !important;
                 transform: none !important;
             }
             
-            .about-highlights,
-            .about-content,
-            .about-content *,
-            .shape,
-            .floating-shapes {
-                transform: none !important;
-                animation: none !important;
+            .about-highlights {
                 position: static !important;
                 top: auto !important;
             }
             
-            /* Force la suppression de tous les espacements problématiques */
-            .about + .expertise {
-                margin-top: -8px !important;
+            /* PROTECTION MOBILE RENFORCÉE HIGHLIGHT CARDS */
+            .highlight-card {
+                opacity: 1 !important;
+                display: block !important;
+                transform: none !important;
+                animation: none !important;
+                transition: opacity 0.3s ease !important;
             }
+            
+            .highlight-card .highlight-icon {
+                transform: scale(1) rotate(0deg) !important;
+                animation: none !important;
+            }
+            
+            .highlight-card h4,
+            .highlight-card p {
+                opacity: 1 !important;
+                transform: translateY(0) !important;
+                animation: none !important;
+            }
+        }
+        
+        /* Animations desktop */
+        @media (min-width: 768px) {
+            .approach-item:hover .approach-icon,
+            .quality-item:hover .quality-icon {
+                transform: scale(1.1) rotate(5deg);
+            }
+            
+            .highlight-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 8px 24px rgba(0, 122, 255, 0.15);
+            }
+            
+            .expertise-card:hover,
+            .portfolio-item:hover,
+            .journey-item:hover {
+                transform: translateY(-6px);
+                box-shadow: 0 16px 48px rgba(0, 122, 255, 0.2);
+            }
+        }
+        
+        /* Performance optimizations */
+        .expertise-card,
+        .portfolio-item,
+        .journey-item,
+        .quality-item,
+        .contact-method,
+        .social-link,
+        .approach-item,
+        .highlight-card {
+            will-change: transform;
         }
     `;
     document.head.appendChild(style);
+    
+    console.log('🎨 CSS avec protection spéciale highlight cards injecté');
 }
 
-// ===== DÉMARRAGE =====
-// Injecter les styles dynamiques
-injectDynamicStyles();
-
-// Correction mobile immédiate
-if (detectMobile()) {
-    fixMobileSpacing();
+// ===== INITIALISATION PRINCIPALE =====
+function initPortfolio() {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initPortfolio);
+        return;
+    }
+    
+    console.log('🚀 Initialisation du portfolio avec animations complètes...');
+    
+    isMobile = detectMobile();
+    
+    // PROTECTION IMMÉDIATE DES HIGHLIGHT CARDS
+    protectHighlightCards();
+    
+    // Injection CSS avec protection spéciale
+    injectDynamicStyles();
+    
+    // Initialisation séquentielle
+    safeExecute(initEventListeners, 'Erreur événements');
+    safeExecute(initSmoothScrolling, 'Erreur smooth scroll');
+    safeExecute(initScrollAnimations, 'Erreur animations');
+    safeExecute(initPortfolioFilters, 'Erreur filtres');
+    safeExecute(initHeroAnimations, 'Erreur animations héro');
+    safeExecute(initParallaxEffect, 'Erreur parallax');
+    safeExecute(initAdvancedHoverEffects, 'Erreur hover');
+    safeExecute(initButtonAnimations, 'Erreur animations boutons');
+    safeExecute(initAccessibility, 'Erreur accessibilité');
+    
+    // Protection continue des highlight cards
+    ensureHighlightCardsVisibility();
+    
+    // Fallback de sécurité
+    emergencyFallback();
+    
+    document.body.classList.add('portfolio-loaded');
+    
+    console.log(`✅ Portfolio avec animations complètes initialisé! Mode: ${isMobile ? '📱 Mobile' : '💻 Desktop'}`);
+    console.log(`🛡️ Protection highlight cards: ${highlightCardsProtected ? 'Active' : 'Standby'}`);
 }
 
-// Initialiser le portfolio
+// ===== DÉMARRAGE AVEC PROTECTION IMMÉDIATE =====
+// Protection immédiate avant même l'initialisation
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🛡️ Protection immédiate highlight cards');
+    protectHighlightCards();
+});
+
+window.addEventListener('load', () => {
+    console.log('🛡️ Protection post-load highlight cards');
+    protectHighlightCards();
+});
+
+// Initialisation principale
 initPortfolio();
 
 // ===== EXPORT POUR DÉBOGAGE =====
-// Fonctions disponibles globalement pour le débogage
 if (typeof window !== 'undefined') {
     window.portfolioDebug = {
+        // Protection spéciale
+        protectHighlightCards,
+        ensureHighlightCardsVisibility,
+        createSafeAnimation,
+        
+        // Fonctions principales
+        detectMobile,
         toggleMobileMenu,
         closeMobileMenu,
         initScrollAnimations,
-        initPortfolioFilters,
-        initHeroAnimations,
-        updateActiveNavLink,
-        animateAboutText,
+        
+        // Animations complètes
+        animateExpertiseCard,
+        animateHighlightCard,
         animateAboutHighlights,
         animateApproachItem,
-        animateHighlightCard,
+        animateAboutText,
         animateAboutQuote,
-        initStickyNavbar,
-        forceShowApproachItems,
-        fixMobileSpacing,
-        detectMobile,
-        removeParallaxEventListeners,
+        animatePortfolioItem,
+        animateJourneyItem,
+        animateQualityItem,
+        animateContactCard,
+        
+        // Effets avancés
+        initAdvancedHoverEffects,
+        initButtonAnimations,
+        initParallaxEffect,
+        
+        // Variables globales
         isMobile,
+        animationsReady,
+        highlightCardsProtected,
         navbar,
         hamburger,
         navMenu
